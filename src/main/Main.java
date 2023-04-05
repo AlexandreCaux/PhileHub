@@ -1,5 +1,8 @@
 package main;
 
+import java.awt.Rectangle;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 public class Main {
@@ -24,7 +27,17 @@ public class Main {
 		window.setVisible(true);
 		window.setResizable(false);
 		
+		//test
+		JButton buttonTest = new JButton();
+		buttonTest.setText("UwU");
+		buttonTest.setBounds(new Rectangle(400,400,500,500));
+		window.add(buttonTest);
+		//
+		
+		
 		Panel.setup();
 		Panel.startThread();
+		
+		
 	}
 }

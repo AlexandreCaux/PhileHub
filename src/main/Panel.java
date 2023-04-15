@@ -16,13 +16,26 @@ import javax.swing.JPanel;
 
 
 
-public class Panel extends JPanel implements Runnable {
+public class Panel extends JPanel {
 
 	// Screen settings
 
 	public final int screenWidth = 1280; // 1280
 	public final int screenHeight = 736; // 736
 	
+	
+
+	public Panel() {
+		this.setPreferredSize(new Dimension(screenWidth, screenHeight)); 
+		this.setBackground(Color.black);
+		this.setDoubleBuffered(true);
+		this.setFocusable(true);
+		
+	}
+	
+	
+	
+	/*
 	BufferedImage Screen;
 	Graphics2D g2;
 	
@@ -111,4 +124,5 @@ public class Panel extends JPanel implements Runnable {
 		
 		g2.dispose();
 	}	
+	*/
 }

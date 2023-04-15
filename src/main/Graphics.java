@@ -5,13 +5,18 @@ import java.awt.Rectangle;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-public class Main {
+public class Graphics {
 	
 	public static JFrame window;
+	public int state = 0;
+	
+	
+	
+	
 	
 	public static void main(String[] args) {
 		
-		
+		//windows settings
 		window = new JFrame();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setAutoRequestFocus(false);
@@ -27,16 +32,26 @@ public class Main {
 		window.setVisible(true);
 		window.setResizable(false);
 		
-		//test
+		
+		//buttons settings
+		
+		
+		btnManager btnM = new btnManager();
+		
+		btnM.createMenu(window);
+		
+		
+		/*
 		JButton buttonTest = new JButton();
-		buttonTest.setText("UwU");
+		buttonTest.setText("test");
 		buttonTest.setBounds(new Rectangle(400,400,500,500));
 		window.add(buttonTest);
+		*/
 		//
 		
 		
-		Panel.setup();
-		Panel.startThread();
+		//Panel.setup();
+		//Panel.startThread();
 		
 		
 	}

@@ -12,7 +12,7 @@ public class btnManager {
 		
 		JButton buttonTest = new JButton();
 		buttonTest.setText("test");
-		buttonTest.setBounds(new Rectangle(20,20,100,100));
+		buttonTest.setBounds(100,100,100,20);
 		window.add(buttonTest);
 	}
 	

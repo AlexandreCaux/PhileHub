@@ -2,6 +2,7 @@ package main;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
@@ -16,7 +17,7 @@ import javax.swing.JPanel;
 
 
 
-public class Panel extends JPanel {
+public class Panel extends JPanel implements Runnable {
 
 	// Screen settings
 
@@ -27,55 +28,43 @@ public class Panel extends JPanel {
 
 	public Panel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight)); 
-		this.setBackground(Color.black);
+		this.setBackground(Color.GRAY);
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
 		
 	}
 	
-	
-	
-	/*
-	BufferedImage Screen;
-	Graphics2D g2;
 	
 	
 	//FPS
 	int FPS = 100;
 
 	//System
-	Thread gameThread;
+	Thread thread;
+	ProjectManager projectM = new ProjectManager();
 
-	
-	//State
-
-
-	public Panel() {
-		this.setPreferredSize(new Dimension(screenWidth, screenHeight)); 
-		this.setBackground(Color.black);
-		this.setDoubleBuffered(true);
-		this.setFocusable(true);
-		
-	}
-	
 
 	public void setup() {
-		Screen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
-		g2 = (Graphics2D)Screen.getGraphics();
+		projectM.addProject(new Project("Projet 1"));
+		projectM.addProject(new Project("Projet 2"));
+		projectM.addProject(new Project("Projet 3"));
+		projectM.addProject(new Project("Projet 1"));
+		projectM.addProject(new Project("Projet 2"));
+		projectM.addProject(new Project("Projet 3"));
+		projectM.addProject(new Project("Projet 1"));
+		projectM.addProject(new Project("Projet 2"));
+		projectM.addProject(new Project("Projet 3"));
+		projectM.addProject(new Project("Projet 1"));
+		projectM.addProject(new Project("Projet 2"));
+		projectM.addProject(new Project("Projet 3"));
 		
 		
 	}
-	
-	
-	
-	
-
-	
 	
 	public void startThread() {
 
-		gameThread = new Thread(this);
-		gameThread.start();
+		thread = new Thread(this);
+		thread.start();
 	}
 
 	@Override
@@ -84,14 +73,9 @@ public class Panel extends JPanel {
 		double drawInterval = 1_000_000_000 / FPS;
 		double nextDrawTime = System.nanoTime() + drawInterval;
 
-		while (gameThread != null) {
-
+		while (thread != null) {
 			
-			// 1 update info
-			update();
-
-			// 2 draw screen
-			drawToScreen();
+			repaint();
 
 			// FPS
 			try {
@@ -113,16 +97,36 @@ public class Panel extends JPanel {
 		}
 
 	}
-
-	public void update() {
+	
+	
+	public void paintComponent(Graphics g) {
+		
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+		
+		
+		g2.setColor(Color.white);
+		
+		
+		projectM.draw(g2);
+		drawInterface(g2);
+		
+		
+		g2.dispose();
+	}
+	
+	public void drawInterface(Graphics2D g2) {
+		
+		Font previousFont = g2.getFont();
+		g2.setFont(new Font("SansSerif", Font.PLAIN, 25));
+		
+		//draw texts
+		g2.drawString("Your Projects", 280, 80);
+		g2.drawString("Project Settings", 800 , 80);
+		
+		g2.setFont(previousFont);
 		
 	}
 	
 	
-	public void drawToScreen() {
-		
-		
-		g2.dispose();
-	}	
-	*/
 }

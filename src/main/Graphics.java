@@ -7,12 +7,7 @@ import javax.swing.JFrame;
 
 public class Graphics {
 	
-	public static JFrame window;
-	public int state = 0;
-	
-	
-	
-	
+	static JFrame window;
 	
 	public static void main(String[] args) {
 		
@@ -35,11 +30,11 @@ public class Graphics {
 		
 		//buttons settings
 		
-		
+		/*
 		btnManager btnM = new btnManager();
 		
 		btnM.createMenu(window);
-		
+		*/
 		
 		/*
 		JButton buttonTest = new JButton();
@@ -50,8 +45,8 @@ public class Graphics {
 		//
 		
 		
-		//Panel.setup();
-		//Panel.startThread();
+		Panel.setup();
+		Panel.startThread();
 		
 		
 	}

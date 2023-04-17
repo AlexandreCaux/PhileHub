@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JScrollBar;
 
 public class Graphics {
 	
@@ -18,7 +19,8 @@ public class Graphics {
 		window.setTitle("PhileHub");
 		window.setUndecorated(false);
 		
-		Panel Panel = new Panel();
+		
+		Panel Panel = new Panel(window);
 		window.add(Panel);
 		
 		window.pack();

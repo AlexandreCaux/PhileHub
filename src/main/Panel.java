@@ -13,6 +13,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
@@ -24,27 +25,32 @@ public class Panel extends JPanel implements Runnable {
 	public final int screenWidth = 1280; // 1280
 	public final int screenHeight = 736; // 736
 	
+	JFrame window;
+	
 	
 
-	public Panel() {
+	public Panel(JFrame window) {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight)); 
 		this.setBackground(Color.GRAY);
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
+		this.window = window;
 		
 	}
 	
-	
-	
+
+
+
 	//FPS
 	int FPS = 100;
 
 	//System
 	Thread thread;
-	ProjectManager projectM = new ProjectManager();
+	ProjectManager projectM;
 
 
 	public void setup() {
+		projectM = new ProjectManager(window);
 		projectM.addProject(new Project("Projet 1"));
 		projectM.addProject(new Project("Projet 2"));
 		projectM.addProject(new Project("Projet 3"));
@@ -110,7 +116,7 @@ public class Panel extends JPanel implements Runnable {
 		
 		projectM.draw(g2);
 		drawInterface(g2);
-		
+				
 		
 		g2.dispose();
 	}

@@ -29,13 +29,13 @@ public class Panel extends JPanel implements Runnable {
 	
 	
 
-	public Panel(JFrame window) {
+	public Panel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight)); 
 		this.setBackground(Color.GRAY);
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
-		this.window = window;
-		
+		this.addMouseListener(mouseD);
+		this.addMouseWheelListener(mouseWheelD);
 	}
 	
 
@@ -46,11 +46,12 @@ public class Panel extends JPanel implements Runnable {
 
 	//System
 	Thread thread;
-	ProjectManager projectM;
+	ProjectManager projectM = new ProjectManager();
+	MouseDetection mouseD = new MouseDetection();
+	MouseWheelDetection mouseWheelD = new MouseWheelDetection(this);
 
 
 	public void setup() {
-		projectM = new ProjectManager(window);
 		projectM.addProject(new Project("Projet 1"));
 		projectM.addProject(new Project("Projet 2"));
 		projectM.addProject(new Project("Projet 3"));

@@ -20,7 +20,7 @@ public class Graphics {
 		window.setUndecorated(false);
 		
 		
-		Panel Panel = new Panel(window);
+		Panel Panel = new Panel();
 		window.add(Panel);
 		
 		window.pack();

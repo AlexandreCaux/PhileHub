@@ -47,7 +47,7 @@ public class Panel extends JPanel implements Runnable {
 	//System
 	Thread thread;
 	ProjectManager projectM = new ProjectManager();
-	MouseDetection mouseD = new MouseDetection();
+	MouseDetection mouseD = new MouseDetection(this);
 	MouseWheelDetection mouseWheelD = new MouseWheelDetection(this);
 
 

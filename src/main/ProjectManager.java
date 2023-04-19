@@ -42,6 +42,12 @@ public class ProjectManager {
 		
 	}
 	
+	public void selectProject(int y) {
+		for(int i=0; i< listProject.size();i++) {
+			if(y > 100+i*70 + yscroll)
+		}
+	}
+	
 	public void draw(Graphics2D g2) {
 		
 		

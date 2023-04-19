@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -10,6 +11,7 @@ public class Project {
 
 	String name;
 	LocalDateTime dateOfCreation;
+	boolean isSelected = false;
 	List<String> listPath = new LinkedList<>();
 	
 	public Project(String name) {
@@ -26,7 +28,14 @@ public class Project {
 		int boxHeight = 70;
 		int boxWidth = 500;
 		
-		
+		if(isSelected) {
+			g2.setColor(Color.blue);
+		}
+		else {
+			g2.setColor(Color.lightGray);
+		}
+		g2.fillRect(x,y,boxWidth,boxHeight);
+		g2.setColor(Color.white);
 		g2.drawRect(x, y, boxWidth, boxHeight);
 		g2.drawString(name, x+20, y+20);
 		

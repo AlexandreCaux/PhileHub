@@ -31,7 +31,7 @@ public class PanelSettings extends JPanel {
 		
 		JTextField nameProject = new JTextField();
 		nameProject.setBounds(20,80,200,28);
-		nameProject.setVisible(false);
+		nameProject.setVisible(true);
 		
 		JButton removeBtn = new JButton();
 		removeBtn.setBounds(400,80,100,100);
@@ -45,13 +45,13 @@ public class PanelSettings extends JPanel {
 		
 		
 		JButton addPathBtn = new JButton();
-		removeBtn.setBounds(800,80,100,100);
-		removeBtn.setText("addPath");
-		removeBtn.addActionListener(new ActionListener(){
+		addPathBtn.setBounds(800,80,100,100);
+		addPathBtn.setText("addPath");
+		addPathBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				JFileChooser choose = new JFileChooser();
 				choose.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				int returnValue=choose.showOpenDialog(removeBtn);
+				int returnValue=choose.showOpenDialog(addPathBtn);
 				if(returnValue==JFileChooser.APPROVE_OPTION){
 				   String path =choose.getSelectedFile().getAbsolutePath();
 				   panel.projectM.listProject.get(panel.projectM.indexProjectSelected).addPath(path);
@@ -61,6 +61,7 @@ public class PanelSettings extends JPanel {
 		
 		this.add(nameProject);
 		this.add(removeBtn);
+		this.add(addPathBtn);
 		
 		
 	}

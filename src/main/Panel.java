@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 
@@ -27,15 +29,19 @@ public class Panel extends JPanel implements Runnable {
 	
 	JFrame window;
 	
-	
 
-	public Panel() {
+	public Panel(JFrame window) {
+		
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight)); 
-		this.setBackground(Color.GRAY);
+		this.setBackground(Color.gray);
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
+		this.setOpaque(true);
 		this.addMouseListener(mouseD);
 		this.addMouseWheelListener(mouseWheelD);
+		this.window= window;
+			
+		
 	}
 	
 
@@ -65,7 +71,6 @@ public class Panel extends JPanel implements Runnable {
 		projectM.addProject(new Project("Projet 2"));
 		projectM.addProject(new Project("Projet 3"));
 		
-		
 	}
 	
 	public void startThread() {
@@ -82,7 +87,7 @@ public class Panel extends JPanel implements Runnable {
 
 		while (thread != null) {
 			
-			repaint();
+			window.repaint();
 
 			// FPS
 			try {
@@ -108,6 +113,7 @@ public class Panel extends JPanel implements Runnable {
 	
 	public void paintComponent(Graphics g) {
 		
+		
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		
@@ -116,6 +122,8 @@ public class Panel extends JPanel implements Runnable {
 		
 		
 		projectM.draw(g2);
+		
+		
 		drawInterface(g2);
 				
 		

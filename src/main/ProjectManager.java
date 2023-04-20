@@ -24,10 +24,12 @@ public class ProjectManager {
 	
 	public void addProject(Project p) {
 		listProject.add(p);
+
+		
 	}
 
 	public void scroll(boolean isUp) {
-		int yScrollAdd = 15;
+		int yScrollAdd = 30;
 		if(!isUp && yScroll > (maxY - minY) - (listProject.size() * 70) ) {
 			yScroll -= yScrollAdd;
 		}
@@ -44,14 +46,21 @@ public class ProjectManager {
 	
 	public void selectProject(int y) {
 		for(int i=0; i< listProject.size();i++) {
-			if(y > 100+i*70 + yscroll)
+			if(y > 100+i*70 + yScroll && y < 100 + (i+1)*70 ) {
+				if(indexProjectSelected != -1) {
+					listProject.get(indexProjectSelected).isSelected = false;
+				}
+				indexProjectSelected = i;
+				listProject.get(indexProjectSelected).isSelected = true;
+				
+			}
 		}
 	}
 	
+	
 	public void draw(Graphics2D g2) {
-		
-		
-		
+	
+			
 		for(int i =0 ; i< listProject.size(); i++) {
 			listProject.get(i).draw(g2, 100, 100+i*70 + yScroll);
 		}
@@ -63,6 +72,14 @@ public class ProjectManager {
 		g2.fillRect(90, maxY, 520, 400);
 		g2.fillRect(90, 0, maxX-90+10 , minY);
 		g2.setColor(Color.white);
+		
+		if(indexProjectSelected != -1) {
+			
+		}
+		else{
+			g2.drawString("Select a project to change its settings", 800, 400);
+		}
+		
 	}
 	
 }

@@ -20,6 +20,7 @@ public class Project {
 	}
 	
 	public void addPath(String path) {
+		System.out.print(name);
 		listPath.add(path);
 	}
 	

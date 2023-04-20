@@ -16,17 +16,15 @@ public class MouseDetection extends JPanel implements MouseListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		int x = e.getX();
-		int y = e.getY();
-		if( x > 100 && x< 400 && y> 100 && y< 620) {
-			panel.projectM.selectProject(y);
-		}
-		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		int x = e.getX();
+		int y = e.getY();
+		if( x > 100 && x< 600 && y> 100 && y< 620) {
+			panel.projectM.selectProject(y);
+		}
 		
 	}
 

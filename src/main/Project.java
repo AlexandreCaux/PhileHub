@@ -20,14 +20,13 @@ public class Project {
 	}
 	
 	public void addPath(String path) {
-		System.out.print(name);
 		listPath.add(path);
 	}
 	
 	public void draw(Graphics2D g2, int x, int y) {
 		
 		int boxHeight = 70;
-		int boxWidth = 500;
+		int boxWidth = 480;
 		
 		if(isSelected) {
 			g2.setColor(Color.blue);

@@ -78,5 +78,12 @@ public class PanelSettings extends JPanel {
 		this.remove(nameProject);
 	}
 	
+	public void placeBtn() {
+		addPathBtn.setBounds(800,80,100,100);
+		removeBtn.setBounds(400,80,100,100);
+		nameProject.setBounds(20,80,200,28);
+		
+	}
+	
 	
 }

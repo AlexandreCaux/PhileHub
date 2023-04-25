@@ -17,7 +17,7 @@ public class ProjectManager {
 	
 	
 	int maxY = 640;
-	int minY = 120;
+	int minY = 100;
 	int minX = 100;
 	int maxX = 600;
 	
@@ -46,7 +46,7 @@ public class ProjectManager {
 	
 	public void selectProject(int y, PanelSettings panelS) {
 		for(int i=0; i< listProject.size();i++) {
-			if(y > 100+i*70 + yScroll && y < 100 + (i+1)*70 ) {
+			if(y > minY+i*70 + yScroll && y < minY + (i+1)*70 ) {
 				if(indexProjectSelected != -1) {
 					listProject.get(indexProjectSelected).isSelected = false;
 				}
@@ -63,7 +63,7 @@ public class ProjectManager {
 	
 			
 		for(int i =0 ; i< listProject.size(); i++) {
-			listProject.get(i).draw(g2, 100, 120+i*70 + yScroll);
+			listProject.get(i).draw(g2, minX, minY+i*70 + yScroll);
 		}
 		
 		

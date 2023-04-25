@@ -15,36 +15,41 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileSystemView;
 
 public class PanelSettings extends JPanel {
+	
+	JTextField nameProject = new JTextField();
+	JButton removeBtn = new JButton();
+	JButton addPathBtn = new JButton();
+	
 
 	public PanelSettings() {
 		
 		this.setPreferredSize(new Dimension(400, 400)); 
 		this.setBackground(Color.gray);
-		this.setDoubleBuffered(true);
 		this.setFocusable(true);
 		this.setOpaque(true);
 			
 		
 	}
 	
-	public void addInterface(Panel panel) {
+	public void createInterface(Panel panel) {
+	
 		
-		JTextField nameProject = new JTextField();
+		
 		nameProject.setBounds(20,80,200,28);
-		nameProject.setVisible(true);
 		
-		JButton removeBtn = new JButton();
+		
+		
 		removeBtn.setBounds(400,80,100,100);
 		removeBtn.setText("remove project");
 		removeBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 			panel.projectM.listProject.remove(panel.projectM.indexProjectSelected);
 			panel.projectM.indexProjectSelected = -1;
+			removeInterface();
 		    }
 		});
 		
 		
-		JButton addPathBtn = new JButton();
 		addPathBtn.setBounds(800,80,100,100);
 		addPathBtn.setText("addPath");
 		addPathBtn.addActionListener(new ActionListener(){
@@ -58,14 +63,20 @@ public class PanelSettings extends JPanel {
 				}
 		    }
 		});
-		
-		this.add(nameProject);
-		this.add(removeBtn);
-		this.add(addPathBtn);
-		
-		
 	}
 	
+	public void addInterface() {
+		
+		this.add(addPathBtn);
+		this.add(removeBtn);
+		this.add(nameProject);
+	}
+	
+	public void removeInterface() {
+		this.remove(addPathBtn);
+		this.remove(removeBtn);
+		this.remove(nameProject);
+	}
 	
 	
 }

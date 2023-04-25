@@ -28,19 +28,18 @@ public class Panel extends JPanel implements Runnable {
 	public final int screenHeight = 736; // 736
 	
 	JFrame window;
-	
+	PanelSettings panelS;
 
-	public Panel(JFrame window) {
+	public Panel(JFrame window, PanelSettings panelS) {
 		
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight)); 
 		this.setBackground(Color.gray);
-		this.setDoubleBuffered(true);
 		this.setFocusable(true);
 		this.setOpaque(true);
 		this.addMouseListener(mouseD);
 		this.addMouseWheelListener(mouseWheelD);
 		this.window= window;
-			
+		this.panelS = panelS;
 		
 	}
 	
@@ -58,6 +57,7 @@ public class Panel extends JPanel implements Runnable {
 
 
 	public void setup() {
+		mouseD.getPanelS(panelS);
 		projectM.addProject(new Project("Projet 1"));
 		projectM.addProject(new Project("Projet 2"));
 		projectM.addProject(new Project("Projet 3"));
@@ -81,11 +81,13 @@ public class Panel extends JPanel implements Runnable {
 
 	@Override
 	public void run() {
+		
 
 		double drawInterval = 1_000_000_000 / FPS;
 		double nextDrawTime = System.nanoTime() + drawInterval;
 
 		while (thread != null) {
+			
 			
 			window.repaint();
 
@@ -120,13 +122,12 @@ public class Panel extends JPanel implements Runnable {
 		
 		g2.setColor(Color.white);
 		
+		g2.setColor(Color.black);
 		
 		projectM.draw(g2);
 		
-		
 		drawInterface(g2);
-				
-		
+			
 		g2.dispose();
 	}
 	

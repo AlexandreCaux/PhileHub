@@ -35,18 +35,17 @@ public class Graphics {
 		window.setResizable(false);
 		window.pack();
 		
+		
 
 		window.setBackground(Color.gray);
 		window.setSize(1280,736);
 		
-		
-		Panel panel = new Panel(window);
-		panel.setBounds(0,0,1280,736);
 		PanelSettings panelS = new PanelSettings();
-		panelS.setBounds(0,0,1280,736);
+		Panel panel = new Panel(window, panelS);
+		panel.setBounds(0,0,1280,736);
+		panelS.setBounds(500,500,1280,736);
 		panelS.setBackground(new Color(0,0,0,0));
-		panelS.addInterface(panel);
-		
+		panelS.createInterface(panel);
 		
 		JLayeredPane layeredPane = new JLayeredPane();
 		layeredPane.setBounds(0,0,1280,736);

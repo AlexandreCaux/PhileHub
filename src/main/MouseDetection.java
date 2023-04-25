@@ -8,11 +8,15 @@ import javax.swing.JPanel;
 public class MouseDetection extends JPanel implements MouseListener {
 	
 	Panel panel;
+	PanelSettings panelS;
 	
 	public MouseDetection(Panel panel) {
 		this.panel = panel;
 	}
 	
+	public void getPanelS(PanelSettings panelS) {
+		this.panelS = panelS;
+	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -23,7 +27,7 @@ public class MouseDetection extends JPanel implements MouseListener {
 		int x = e.getX();
 		int y = e.getY();
 		if( x > 100 && x< 600 && y> 100 && y< 620) {
-			panel.projectM.selectProject(y);
+			panel.projectM.selectProject(y,panelS);
 		}
 		
 	}

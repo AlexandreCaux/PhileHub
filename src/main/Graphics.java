@@ -19,8 +19,8 @@ import javax.swing.SwingConstants;
 public class Graphics {
 	
 	static JFrame window;
-	int screenWidth = 1280; // 1280
-	int screenHeight = 740; // 736
+	int screenWidth = 1280;
+	int screenHeight = 740;
 	
 	public static void main(String[] args) {
 		
@@ -34,6 +34,7 @@ public class Graphics {
 		window.setVisible(true);
 		window.setResizable(false);
 		window.pack();
+		window.setLayout(null);
 		
 		
 
@@ -43,11 +44,13 @@ public class Graphics {
 		PanelSettings panelS = new PanelSettings();
 		Panel panel = new Panel(window, panelS);
 		panel.setBounds(0,0,1280,736);
+		panelS.setLayout(null);
 		panelS.setBounds(0,0,1280,736);
 		panelS.setBackground(new Color(0,0,0,0));
 		panelS.createInterface(panel);
 		
 		JLayeredPane layeredPane = new JLayeredPane();
+		layeredPane.setLayout(null);
 		layeredPane.setBounds(0,0,1280,736);
 	
 	

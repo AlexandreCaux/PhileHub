@@ -90,7 +90,6 @@ public class Panel extends JPanel implements Runnable {
 			
 			
 			window.repaint();
-			panelS.placeBtn();
 
 			// FPS
 			try {
@@ -128,6 +127,8 @@ public class Panel extends JPanel implements Runnable {
 		projectM.draw(g2);
 		
 		drawInterface(g2);
+		drawTextSettings(g2);
+		
 			
 		g2.dispose();
 	}
@@ -144,22 +145,22 @@ public class Panel extends JPanel implements Runnable {
 		g2.setFont(previousFont);
 		
 		//drawLines
+		
+		g2.drawRect(90, 40, 500, 610);
 		g2.drawLine(90, 90, 590, 90);
-		g2.drawLine(90, 90, 90, 650);
-		g2.drawLine(90, 650, 590, 650);
-		g2.drawLine(590, 90, 590, 650);
-		g2.drawLine(90, 90, 90, 40);
-		g2.drawLine(90, 40, 590 , 40);
-		g2.drawLine(590, 40, 590 , 90);
 		
+		g2.drawRect(690, 40, 500, 610);
 		g2.drawLine(690, 90, 1190, 90);
-		g2.drawLine(690, 90, 690, 650);
-		g2.drawLine(690, 650, 1190, 650);
-		g2.drawLine(1190, 90, 1190, 650);
-		g2.drawLine(690, 90, 690, 40);
-		g2.drawLine(690, 40, 1190 , 40);
-		g2.drawLine(1190, 40, 1190 , 90);
 		
+	}
+	
+	public void drawTextSettings(Graphics2D g2) {
+		if(projectM.indexProjectSelected != -1) {
+			Font previousFont = g2.getFont();
+			g2.setFont(new Font("SansSerif", Font.PLAIN, 20));
+			g2.drawString("Name :", 750, 150);
+			g2.setFont(previousFont);
+		}
 	}
 	
 	

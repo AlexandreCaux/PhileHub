@@ -53,6 +53,7 @@ public class ProjectManager {
 				indexProjectSelected = i;
 				listProject.get(indexProjectSelected).isSelected = true;
 				panelS.addInterface();
+				panelS.nameProject.setText(listProject.get(i).name);
 				
 			}
 		}

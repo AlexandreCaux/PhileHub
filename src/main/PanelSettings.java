@@ -34,9 +34,12 @@ public class PanelSettings extends JPanel {
 	public void createInterface(Panel panel) {
 	
 		
-		
-		nameProject.setBounds(20,80,200,28);
-		
+		nameProject.setBounds(500,0,200,28);
+		nameProject.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panel.projectM.listProject.get(panel.projectM.indexProjectSelected).name = nameProject.getText();
+			}
+		});
 		
 		
 		removeBtn.setBounds(400,80,100,100);
@@ -51,6 +54,7 @@ public class PanelSettings extends JPanel {
 		
 		
 		addPathBtn.setBounds(800,80,100,100);
+		
 		addPathBtn.setText("addPath");
 		addPathBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -78,12 +82,6 @@ public class PanelSettings extends JPanel {
 		this.remove(nameProject);
 	}
 	
-	public void placeBtn() {
-		addPathBtn.setBounds(800,80,100,100);
-		removeBtn.setBounds(400,80,100,100);
-		nameProject.setBounds(20,80,200,28);
-		
-	}
 	
 	
 }

@@ -158,7 +158,11 @@ public class Panel extends JPanel implements Runnable {
 		if(projectM.indexProjectSelected != -1) {
 			Font previousFont = g2.getFont();
 			g2.setFont(new Font("SansSerif", Font.PLAIN, 20));
-			g2.drawString("Name :", 750, 150);
+			g2.drawString("Name :", 820, 140);
+			g2.drawLine(690, 250, 1190, 250);
+			g2.setFont(new Font("SansSerif", Font.PLAIN, 25));
+			g2.drawString("Paths Settings", 850, 280);
+			g2.drawLine(690, 300, 1190, 300);
 			g2.setFont(previousFont);
 		}
 	}

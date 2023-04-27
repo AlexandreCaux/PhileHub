@@ -34,7 +34,7 @@ public class PanelSettings extends JPanel {
 	public void createInterface(Panel panel) {
 	
 		
-		nameProject.setBounds(500,0,200,28);
+		nameProject.setBounds(900,120,150,30);
 		nameProject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				panel.projectM.listProject.get(panel.projectM.indexProjectSelected).name = nameProject.getText();
@@ -42,8 +42,8 @@ public class PanelSettings extends JPanel {
 		});
 		
 		
-		removeBtn.setBounds(400,80,100,100);
-		removeBtn.setText("remove project");
+		removeBtn.setBounds(865,180,150,25);
+		removeBtn.setText("Delete this Project");
 		removeBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 			panel.projectM.listProject.remove(panel.projectM.indexProjectSelected);
@@ -53,8 +53,7 @@ public class PanelSettings extends JPanel {
 		});
 		
 		
-		addPathBtn.setBounds(800,80,100,100);
-		
+		addPathBtn.setBounds(0,0,100,100);
 		addPathBtn.setText("addPath");
 		addPathBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){

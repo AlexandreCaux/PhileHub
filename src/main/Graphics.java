@@ -19,12 +19,11 @@ import javax.swing.SwingConstants;
 public class Graphics {
 	
 	static JFrame window;
+	JPanel panelNewProject = new JPanel();
 	int screenWidth = 1280;
 	int screenHeight = 740;
 	
-	public static void main(String[] args) {
-		
-		//windows settings
+	public static void configWindow() {
 		window = new JFrame();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setAutoRequestFocus(false);
@@ -35,11 +34,21 @@ public class Graphics {
 		window.setResizable(false);
 		window.pack();
 		window.setLayout(null);
-		
-		
-
 		window.setBackground(Color.gray);
 		window.setSize(1280,736);
+	}
+	
+	public void addToPane(JLayeredPane layeredPane,JPanel frame) {
+		layeredPane.add(frame);
+	}
+	
+	public static void main(String[] args) {
+		
+		configWindow();
+	
+		
+		PanelNewProject panelNewProject = new PanelNewProject();
+	
 		
 		PanelSettings panelS = new PanelSettings();
 		Panel panel = new Panel(window, panelS);
@@ -49,27 +58,24 @@ public class Graphics {
 		panelS.setBackground(new Color(0,0,0,0));
 		panelS.createInterface(panel);
 		
+		
+		
+		
+		
 		JLayeredPane layeredPane = new JLayeredPane();
 		layeredPane.setLayout(null);
 		layeredPane.setBounds(0,0,1280,736);
 	
-	
-		
-		
-		
+		layeredPane.add(panelNewProject);
 		layeredPane.add(panelS);
 		layeredPane.add(panel);
 		
 		
-		
 
-		window.add(layeredPane);
-		
-	
-		
+		window.add(layeredPane);		
 		
 		panel.setup();
 		panel.startThread();
 		
-	}
+	}	
 }

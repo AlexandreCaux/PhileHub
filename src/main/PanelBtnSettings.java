@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileSystemView;
 
-public class PanelSettings extends JPanel {
+public class PanelBtnSettings extends JPanel {
 	
 	JTextField nameProject = new JTextField();
 	JButton removeBtn = new JButton();
@@ -25,22 +25,29 @@ public class PanelSettings extends JPanel {
 	JComboBox<String> pathSelection = new JComboBox<String>();
 	
 
-	public PanelSettings() {
+	public PanelBtnSettings() {
 		
-		this.setPreferredSize(new Dimension(400, 400)); 
-		this.setBackground(Color.gray);
 		this.setFocusable(true);
-		this.setOpaque(true);
-			
-		
+		this.setOpaque(true);	
+		this.setLayout(null);
+		this.setBounds(0,0,1280,736);
+		this.setBackground(new Color(0,0,0,0));
 	}
 	
-	public void createInterface(Panel panel) {
+	public void createBtn(Panel panel, PanelNewProject panelNewP, PanelBtnNew panelBtnN) {
 	
 		
 		addProject.setBounds(480,50,100,30);
 		addProject.setFont(new Font("SansSerif", Font.PLAIN, 10));
 		addProject.setText("New Project");
+		addProject.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelNewP.setVisible(true);
+				panelBtnN.addBtn();
+				panel.disableMouseDetector();
+				disableButtons();
+			}
+		});
 		this.add(addProject);
 		
 		
@@ -60,7 +67,7 @@ public class PanelSettings extends JPanel {
 			public void actionPerformed(ActionEvent e){
 			panel.projectM.listProject.remove(panel.projectM.indexProjectSelected);
 			panel.projectM.indexProjectSelected = -1;
-			removeInterface();
+			removeBtn();
 		    }
 		});
 		
@@ -80,19 +87,18 @@ public class PanelSettings extends JPanel {
 		});
 	}
 	
-	public void addInterface(ProjectManager projectM) {
+	public void addBtn(ProjectManager projectM) {
 		
 		this.add(addPathBtn);
 		this.add(removeBtn);
 		this.add(nameProject);
-		
 		for(String path : projectM.listProject.get(projectM.indexProjectSelected).listPath) {
 			pathSelection.addItem(path);
 		}
 		this.add(pathSelection);
 	}
 	
-	public void removeInterface() {
+	public void removeBtn() {
 		this.remove(addPathBtn);
 		this.remove(removeBtn);
 		this.remove(nameProject);
@@ -102,9 +108,15 @@ public class PanelSettings extends JPanel {
 	
 	public void disableButtons() {
 		removeBtn.setEnabled(false);
+		addPathBtn.setEnabled(false);
+		nameProject.setEnabled(false);
+		pathSelection.setEnabled(false);
 	}
-	public void unableButtons() {
-		
+	public void enableButtons() {
+		removeBtn.setEnabled(true);
+		addPathBtn.setEnabled(true);
+		nameProject.setEnabled(true);
+		pathSelection.setEnabled(true);
 	}
 	
 	

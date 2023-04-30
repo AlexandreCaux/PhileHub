@@ -28,9 +28,9 @@ public class Panel extends JPanel implements Runnable {
 	public final int screenHeight = 736; // 736
 	
 	JFrame window;
-	PanelSettings panelS;
+	PanelBtnSettings panelBtnS;
 
-	public Panel(JFrame window, PanelSettings panelS) {
+	public Panel(JFrame window, PanelBtnSettings panelBtnS) {
 		
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight)); 
 		this.setBackground(Color.gray);
@@ -39,8 +39,18 @@ public class Panel extends JPanel implements Runnable {
 		this.addMouseListener(mouseD);
 		this.addMouseWheelListener(mouseWheelD);
 		this.window= window;
-		this.panelS = panelS;
+		this.panelBtnS = panelBtnS;
 		
+	}
+	
+	public void enableMouseDetector() {
+		this.addMouseListener(mouseD);
+		this.addMouseWheelListener(mouseWheelD);	
+	}
+	
+	public void disableMouseDetector() {
+		this.removeMouseListener(mouseD);
+		this.removeMouseWheelListener(mouseWheelD);
 	}
 	
 
@@ -57,7 +67,7 @@ public class Panel extends JPanel implements Runnable {
 
 
 	public void setup() {
-		mouseD.getPanelS(panelS);
+		mouseD.getPanelS(panelBtnS);
 		projectM.addProject(new Project("Projet 1"));
 		projectM.addProject(new Project("Projet 2"));
 		projectM.addProject(new Project("Projet 3"));

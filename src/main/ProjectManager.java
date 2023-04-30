@@ -44,7 +44,7 @@ public class ProjectManager {
 		
 	}
 	
-	public void selectProject(int y, PanelSettings panelS) {
+	public void selectProject(int y, PanelBtnSettings panelBtnS) {
 		for(int i=0; i< listProject.size();i++) {
 			if(y > minY+i*70 + yScroll && y < minY + (i+1)*70 ) {
 				if(indexProjectSelected != -1) {
@@ -52,8 +52,8 @@ public class ProjectManager {
 				}
 				indexProjectSelected = i;
 				listProject.get(indexProjectSelected).isSelected = true;
-				panelS.addInterface(this);
-				panelS.nameProject.setText(listProject.get(i).name);
+				panelBtnS.addBtn(this);
+				panelBtnS.nameProject.setText(listProject.get(i).name);
 				
 			}
 		}

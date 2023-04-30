@@ -47,16 +47,15 @@ public class Graphics {
 		configWindow();
 	
 		
-		PanelNewProject panelNewProject = new PanelNewProject();
+		PanelNewProject panelNewP = new PanelNewProject();
+		PanelBtnNew panelBtnN = new PanelBtnNew(panelNewP);
 	
 		
-		PanelSettings panelS = new PanelSettings();
-		Panel panel = new Panel(window, panelS);
+		PanelBtnSettings panelBtnS = new PanelBtnSettings();
+		Panel panel = new Panel(window, panelBtnS);
 		panel.setBounds(0,0,1280,736);
-		panelS.setLayout(null);
-		panelS.setBounds(0,0,1280,736);
-		panelS.setBackground(new Color(0,0,0,0));
-		panelS.createInterface(panel);
+		panelBtnS.createBtn(panel, panelNewP, panelBtnN);
+		panelBtnN.createBtn(panel,panelNewP, panelBtnS);
 		
 		
 		
@@ -66,8 +65,10 @@ public class Graphics {
 		layeredPane.setLayout(null);
 		layeredPane.setBounds(0,0,1280,736);
 	
-		layeredPane.add(panelNewProject);
-		layeredPane.add(panelS);
+		
+		layeredPane.add(panelBtnN);
+		layeredPane.add(panelNewP);
+		layeredPane.add(panelBtnS);
 		layeredPane.add(panel);
 		
 		

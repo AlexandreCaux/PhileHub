@@ -50,7 +50,7 @@ public class PanelBtnNew extends JPanel{
 		confirmBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				String name = nameProject.getText();
-				if(!name.equals("") && pathSelected != "") {
+				if(!name.equals("") && !pathSelected.equals("")) {
 					Project project = new Project(name);
 					project.addPath(pathSelected);
 					panel.projectM.addProject(project);

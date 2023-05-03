@@ -68,19 +68,6 @@ public class Panel extends JPanel implements Runnable {
 
 	public void setup() {
 		mouseD.getPanelS(panelBtnS);
-		projectM.addProject(new Project("Projet 1"));
-		projectM.addProject(new Project("Projet 2"));
-		projectM.addProject(new Project("Projet 3"));
-		projectM.addProject(new Project("Projet 1"));
-		projectM.addProject(new Project("Projet 2"));
-		projectM.addProject(new Project("Projet 3"));
-		projectM.addProject(new Project("Projet 1"));
-		projectM.addProject(new Project("Projet 2"));
-		projectM.addProject(new Project("Projet 3"));
-		projectM.addProject(new Project("Projet 1"));
-		projectM.addProject(new Project("Projet 2"));
-		projectM.addProject(new Project("Projet 3"));
-		
 	}
 	
 	public void startThread() {
@@ -100,6 +87,7 @@ public class Panel extends JPanel implements Runnable {
 			
 			
 			window.repaint();
+			
 
 			// FPS
 			try {
@@ -137,7 +125,9 @@ public class Panel extends JPanel implements Runnable {
 		projectM.draw(g2);
 		
 		drawInterface(g2);
-		drawTextSettings(g2);
+		if(projectM.indexProjectSelected != -1) {
+			drawTextSettings(g2);
+		}
 		
 			
 		g2.dispose();
@@ -149,8 +139,8 @@ public class Panel extends JPanel implements Runnable {
 		g2.setFont(new Font("SansSerif", Font.PLAIN, 25));
 		
 		//draw texts
-		g2.drawString("Your Projects", 280, 80);
-		g2.drawString("Project Settings", 800 , 80);
+		g2.drawString("Your Projects", 260, 75);
+		g2.drawString("Project Settings", 850 , 75);
 		
 		g2.setFont(previousFont);
 		
@@ -165,17 +155,14 @@ public class Panel extends JPanel implements Runnable {
 	}
 	
 	public void drawTextSettings(Graphics2D g2) {
-		if(projectM.indexProjectSelected != -1) {
-			Font previousFont = g2.getFont();
-			g2.setFont(new Font("SansSerif", Font.PLAIN, 20));
-			g2.drawString("Name :", 820, 140);
-			g2.drawLine(690, 250, 1190, 250);
-			g2.setFont(new Font("SansSerif", Font.PLAIN, 25));
-			g2.drawString("Paths Settings", 850, 280);
-			g2.drawLine(690, 300, 1190, 300);
-			g2.setFont(previousFont);
-		}
+		Font previousFont = g2.getFont();
+		g2.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		g2.drawString("Name :", 825, 160);	
+		g2.drawLine(690, 305, 1190, 305);
+		g2.setFont(new Font("SansSerif", Font.PLAIN, 25));
+		g2.drawString("Paths Settings", 865, 340);
+		g2.drawLine(690, 355, 1190, 355);
+		g2.setFont(previousFont);
 	}
-	
 	
 }

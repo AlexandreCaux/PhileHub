@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,6 +48,7 @@ public class ProjectManager {
 	public void selectProject(int y, PanelBtnSettings panelBtnS) {
 		for(int i=0; i< listProject.size();i++) {
 			if(y > minY+i*70 + yScroll && y < minY + (i+1)*70 ) {
+				panelBtnS.removeBtn();
 				if(indexProjectSelected != -1) {
 					listProject.get(indexProjectSelected).isSelected = false;
 				}
@@ -79,7 +81,10 @@ public class ProjectManager {
 			
 		}
 		else{
-			g2.drawString("Select a project to change its settings", 800, 400);
+			Font previousFont = g2.getFont();
+			g2.setFont(new Font("SansSerif", Font.PLAIN, 18));
+			g2.drawString("Select a project to change its settings", 780, 350);
+			g2.setFont(previousFont);
 		}
 		
 	}

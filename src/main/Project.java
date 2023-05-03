@@ -23,6 +23,10 @@ public class Project {
 		listPath.add(path);
 	}
 	
+	public void removePath(String path) {
+		listPath.remove(path);
+	}
+	
 	public void draw(Graphics2D g2, int x, int y) {
 		
 		int boxHeight = 70;

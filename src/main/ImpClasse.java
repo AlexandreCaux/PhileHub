@@ -19,18 +19,22 @@ public class ImpClasse extends UnicastRemoteObject implements Hello {
     }
 
     @Override
-    public void uploadFile(byte[] fileData, String fileName) throws RemoteException{
-        try{
-            FileOutputStream outputStream = new FileOutputStream(fileName);
-            outputStream.write(fileData);
-            outputStream.close();
-        } catch (IOException e){
-            throw new RemoteException("Error uploading file: " + e.getMessage());
+    public void uploadFile(byte[] fileData, String targetpath) throws RemoteException{ //client to server
+        //retrieve file data
+        //put it in the right place
+        try {
+            try (FileOutputStream outputStream = new FileOutputStream(targetpath)) {
+                outputStream.write(fileData);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public byte[] downloadFile(String fileName) throws RemoteException{
+    public byte[] downloadFile(String fileName) throws RemoteException{ //server to client
         try {
             File file = new File(fileName);
             byte fileData[] = new byte[(int) file.length()];
@@ -59,5 +63,32 @@ public class ImpClasse extends UnicastRemoteObject implements Hello {
     @Override
     public boolean fileexists(File f){
         return(f.exists());
+    }
+
+    @Override
+    public boolean createdir(File f){return f.mkdir();}
+
+    @Override
+    public boolean fexist(File f){return(f.exists());}
+
+    @Override
+    public long lmodified(File f){
+        return f.lastModified();
+    }
+
+    @Override
+    public boolean delf(File f){
+        return f.delete();
+    }
+
+    @Override
+    public boolean deldir(File directoryToBeDeleted) {
+        File[] allContents = directoryToBeDeleted.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deldir(file);
+            }
+        }
+        return directoryToBeDeleted.delete();
     }
 }

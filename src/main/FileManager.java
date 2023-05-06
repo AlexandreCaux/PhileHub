@@ -1,11 +1,8 @@
 package main;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
+import java.io.*;
 import java.nio.file.Files;
 import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -58,7 +55,37 @@ public class FileManager extends Thread{
     }
      */
 
-    public static void copy(File ps,File pd) {
+    public static void copyfilesrmi(File source,File target){
+        if(sserv){
+            //retrieve file data
+            //put it in the right place
+            try {
+                byte[] data = stub.downloadFile(source.toString());
+                try (FileOutputStream outputStream = new FileOutputStream(target.toString())) {
+                    outputStream.write(data);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else{ //the destination is the server
+            //send the data
+            try {
+                byte fileData[] = new byte[(int) source.length()];
+                FileInputStream inputStream = new FileInputStream(source);
+                inputStream.read(fileData);
+                inputStream.close();
+                stub.uploadFile(fileData,target.toString());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void copy(File ps,File pd) {
         File[] lf;
         if(sserv){ //la source est le serveur
             lf = stub.listFiles(ps);
@@ -85,15 +112,56 @@ public class FileManager extends Thread{
                     if (dc.exists()) {
                         copy(sc, dc);
                     } else {
-                        dc.mkdir();
+                        if(dserv){
+                            stub.createdir(dc);
+                        }
+                        else{
+                            dc.mkdir();
+                        }
                         copy(sc, dc);
                     }
                 }
                 else {
-                    if (dc.exists()) {
-                        //check the last modified date
-                        if (!(sc.lastModified() == dc.lastModified())) {
-                            dc.delete();
+                    boolean ex = false;
+                    long sclm=0;
+                    long dclm=0;
+                    if(sserv){
+                        dclm=dc.lastModified();
+                        sclm=stub.lmodified(sc);
+                    }
+                    else if(dserv){
+                        ex=stub.fexist(dc);
+                        dclm=stub.lmodified(dc);
+                        sclm=sc.lastModified();
+                    }
+                    else{
+                        ex=dc.exists();
+                    }
+                    if(ex){//check the last modified date
+                        if (!(sclm == dclm)){
+                            if(dserv){
+                                stub.delf(dc);
+                            }
+                            else{
+                                dc.delete();
+                            }
+                                if(net){
+                                    copyfilesrmi(sc,dc);
+                                }
+                                else{
+                                    try {
+                                        Files.copy(sc.toPath(), dc.toPath());
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }
+                            }
+                        }
+                    else {
+                        if(net){
+                            copyfilesrmi(sc,dc);
+                        }
+                        else{
                             try {
                                 Files.copy(sc.toPath(), dc.toPath());
                             } catch (IOException e) {
@@ -101,18 +169,11 @@ public class FileManager extends Thread{
                             }
                         }
                     }
-                    else {
-                        try {
-                            Files.copy(sc.toPath(), dc.toPath());
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
                 }
             }
         }
 
-    public static Boolean deleteDirectory(File directoryToBeDeleted) {
+    public static boolean deleteDirectory(File directoryToBeDeleted) {
         File[] allContents = directoryToBeDeleted.listFiles();
         if (allContents != null) {
             for (File file : allContents) {
@@ -123,31 +184,63 @@ public class FileManager extends Thread{
     }
 
     public static void rmdiff(File ps,File pd){
-        for(File f : Objects.requireNonNull(pd.listFiles())){
+        File[] lf;
+        if(dserv){ //la destination est le serveur
+            lf = stub.listFiles(pd);
+        } else {
+            lf = pd.listFiles();
+        }
+        for(File f : lf){
             File sc = new File(ps,f.getName());
             File dc = new File(pd,f.getName());
             if(f.isDirectory()){
-                if(sc.exists()){
+                boolean a;
+                if(sserv){
+                    a=stub.fexist(sc);
+                }
+                else{
+                    a=sc.exists();
+                }
+                if(a){
                     rmdiff(sc,dc);
                 }
                 else{
-                    deleteDirectory(dc);
+                    if(dserv){
+                        stub.deldir(dc);
+                    }
+                    else{
+                        deleteDirectory(dc);
+                    }
                 }
             }
             else {
-                if(!(sc.exists())) {
-                    dc.delete();
+                boolean b;
+                if(sserv){
+                    b=stub.fexist(sc);
+                }
+                else{
+                    b=sc.exists();
+                }
+                if(!b) {
+                    if(dserv){
+                        stub.delf(dc);
+                    }
+                    else {
+                        dc.delete();
+                    }
                 }
             }
         }
     }
 
-    public static File whatsource(File a,File b){
-        if(a.lastModified() > b.lastModified()){
-            return a;
+    public static File whatsource(File fserv,File fclient){
+        long fslm= stub.lmodified(fserv);
+        long fclm= fclient.lastModified();
+        if(fslm > fclm){
+            return fserv;
         }
-        else if(a.lastModified() < b.lastModified()){
-            return b;
+        else if(fslm < fclm){
+            return fclient;
         }
         else{ //Files are already synchronized
             return null;

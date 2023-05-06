@@ -25,6 +25,7 @@ public class PanelBtnSettings extends JPanel {
 	JButton addPathBtn = new JButton();
 	JButton removePathBtn = new JButton();
 	JButton addProject = new JButton();
+	JButton networkBtn = new JButton();
 	JComboBox<String> pathSelection = new JComboBox<String>();
 	
 
@@ -37,11 +38,23 @@ public class PanelBtnSettings extends JPanel {
 		this.setBackground(new Color(0,0,0,0));
 	}
 	
-	public void createBtn(Panel panel, PanelNewProject panelNewP, PanelBtnNew panelBtnN) {
+	public void createBtn(Panel panel, PanelNewProject panelNewP, PanelBtnNewProject panelBtnN) {
 		
 
+		networkBtn.setBounds(100,50,110,30);
+		networkBtn.setFont(new Font("SansSerif", Font.PLAIN, 10));
+		networkBtn.setText("Share A Project");
+		networkBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		this.add(networkBtn);
 		
-		addProject.setBounds(480,50,100,30);
+		
+		
+		
+		
+		addProject.setBounds(470,50,110,30);
 		addProject.setFont(new Font("SansSerif", Font.PLAIN, 10));
 		addProject.setText("New Project");
 		addProject.addActionListener(new ActionListener() {

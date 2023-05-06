@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 
 import main.Project;
 
-public class PanelBtnNew extends JPanel{
+public class PanelBtnNewProject extends JPanel{
 
 	JTextField nameProject = new JTextField();
 	JButton addPathBtn = new JButton();
@@ -20,7 +20,7 @@ public class PanelBtnNew extends JPanel{
 	JButton cancelBtn = new JButton();
 	String pathSelected = "";
 	
-	public PanelBtnNew(PanelNewProject panelNewP) {
+	public PanelBtnNewProject(PanelNewProject panelNewP) {
 		this.setBackground(Color.gray);
 		this.setFocusable(true);
 		this.setOpaque(true);

@@ -29,7 +29,6 @@ public class Graphics {
 		window.setAutoRequestFocus(false);
 		window.setTitle("PhileHub");
 		window.setUndecorated(false);
-		window.setLocationRelativeTo(null);
 		window.setVisible(true);
 		window.setResizable(false);
 		window.pack();
@@ -38,10 +37,7 @@ public class Graphics {
 		window.setSize(1280,736);
 	}
 	
-	public void addToPane(JLayeredPane layeredPane,JPanel frame) {
-		layeredPane.add(frame);
-	}
-	
+
 	public static void main(String[] args) {
 		
 		configWindow();
@@ -58,9 +54,6 @@ public class Graphics {
 		panelBtnN.createBtn(panel,panelNewP, panelBtnS);
 		
 		
-		
-		
-		
 		JLayeredPane layeredPane = new JLayeredPane();
 		layeredPane.setLayout(null);
 		layeredPane.setBounds(0,0,1280,736);
@@ -73,7 +66,8 @@ public class Graphics {
 		
 		
 
-		window.add(layeredPane);		
+		window.add(layeredPane);	
+		window.setLocationRelativeTo(null);
 		
 		panel.setup();
 		panel.startThread();

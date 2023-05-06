@@ -3,6 +3,13 @@ package main;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -59,6 +66,45 @@ public class ProjectManager {
 				
 			}
 		}
+	}
+	
+	public void save() {
+		try {
+			File data = new File("dataProject.txt");
+			data.createNewFile();
+			FileWriter writer = new FileWriter("dataProject.txt");
+			for(Project project : listProject) {
+				writer.write(project.name +" {\n" + project.dateOfCreation + "\n" );
+				for(String path : project.listPath) {
+					writer.write(path + "\n");
+				}
+				writer.write("}\n");
+			}
+			writer.write(";");
+			writer.close();
+		} catch (IOException e) {
+			 e.printStackTrace();	
+		}
+	}
+	
+	public void loadSave() throws IOException {
+		
+			BufferedReader data = new BufferedReader(new FileReader("dataProject.txt"));
+			String line = data.readLine();
+			
+			while(!line.equals(";")) {
+					String[] separated = line.split(" ");
+					Project project = new Project(separated[0]);
+					line = data.readLine();
+					project.changeDateCreation(line);
+					line = data.readLine();
+					while(!line.equals("}")) {
+						project.addPath(line);
+						line = data.readLine();
+					}
+					listProject.add(project);
+					line = data.readLine();
+			}
 	}
 	
 	

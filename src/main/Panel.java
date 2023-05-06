@@ -40,7 +40,6 @@ public class Panel extends JPanel implements Runnable {
 		this.addMouseWheelListener(mouseWheelD);
 		this.window= window;
 		this.panelBtnS = panelBtnS;
-		
 	}
 	
 	public void enableMouseDetector() {
@@ -68,6 +67,11 @@ public class Panel extends JPanel implements Runnable {
 
 	public void setup() {
 		mouseD.getPanelS(panelBtnS);
+		try {
+			projectM.loadSave();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void startThread() {

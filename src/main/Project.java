@@ -10,13 +10,21 @@ import java.util.List;
 public class Project {
 
 	String name;
-	LocalDateTime dateOfCreation;
+	String dateOfCreation;
 	boolean isSelected = false;
 	List<String> listPath = new LinkedList<>();
 	
 	public Project(String name) {
 		this.name = name;
-		dateOfCreation = LocalDateTime.now();
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+		dateOfCreation = dtf.format(LocalDateTime.now());
+	}
+	
+	public void changeDateCreation(String date) {
+		dateOfCreation = date;
+	}
+	public void changeName(String name) {
+		this.name = name;
 	}
 	
 	public void addPath(String path) {
@@ -42,10 +50,7 @@ public class Project {
 		g2.setColor(Color.white);
 		g2.drawRect(x, y, boxWidth, boxHeight);
 		g2.drawString(name, x+20, y+20);
-		
-		
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"); 
-		g2.drawString("Date Of Creation : " + dtf.format(dateOfCreation) , x+20, y + 60);
+		g2.drawString("Date Of Creation : " + dateOfCreation , x+20, y + 60);
 		
 		
 	}

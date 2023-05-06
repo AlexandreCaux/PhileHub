@@ -59,7 +59,8 @@ public class PanelBtnSettings extends JPanel {
 		nameProject.setBounds(900,140,150,30);
 		nameProject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				panel.projectM.listProject.get(panel.projectM.indexProjectSelected).name = nameProject.getText();
+				panel.projectM.listProject.get(panel.projectM.indexProjectSelected).changeName(nameProject.getText());
+				panel.projectM.save();
 			}
 		});
 		
@@ -70,6 +71,7 @@ public class PanelBtnSettings extends JPanel {
 			public void actionPerformed(ActionEvent e){
 			panel.projectM.listProject.remove(panel.projectM.indexProjectSelected);
 			panel.projectM.indexProjectSelected = -1;
+			panel.projectM.save();
 			removeBtn();
 		    }
 		});
@@ -85,6 +87,7 @@ public class PanelBtnSettings extends JPanel {
 				if(returnValue==JFileChooser.APPROVE_OPTION){
 				   String path =choose.getSelectedFile().getAbsolutePath();
 				   panel.projectM.listProject.get(panel.projectM.indexProjectSelected).addPath(path);
+				   panel.projectM.save();
 				   removeBtn();
 				   addBtn(panel.projectM);
 				}
@@ -97,6 +100,7 @@ public class PanelBtnSettings extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				String pathToRemove = pathSelection.getSelectedItem().toString();
 				panel.projectM.listProject.get(panel.projectM.indexProjectSelected).removePath(pathToRemove);
+				panel.projectM.save();
 				removeBtn();
 				addBtn(panel.projectM);
 		    }

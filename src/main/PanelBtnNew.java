@@ -62,6 +62,7 @@ public class PanelBtnNew extends JPanel{
 					nameProject.setText("");
 					panel.enableMouseDetector();
 					panelBtnS.enableButtons();
+					panel.projectM.save();
 				}
 				else {
 					panelNewP.errorType = true;

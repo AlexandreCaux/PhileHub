@@ -26,6 +26,9 @@ public class Project {
 	public void changeName(String name) {
 		this.name = name;
 	}
+	public List<String> getListPath() {
+		return listPath;
+	}
 	
 	public void addPath(String path) {
 		listPath.add(path);

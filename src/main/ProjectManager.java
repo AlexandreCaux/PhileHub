@@ -16,6 +16,8 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JScrollBar;
 
+import panel.PanelBtnSettings;
+
 public class ProjectManager {
 	
 	List<Project> listProject = new LinkedList<>(); 	
@@ -47,10 +49,8 @@ public class ProjectManager {
 				yScroll = 0;
 			}
 		}
-		
-		
-		
 	}
+	
 	
 	public void selectProject(int y, PanelBtnSettings panelBtnS) {
 		for(int i=0; i< listProject.size();i++) {
@@ -62,10 +62,26 @@ public class ProjectManager {
 				indexProjectSelected = i;
 				listProject.get(indexProjectSelected).isSelected = true;
 				panelBtnS.addBtn(this);
-				panelBtnS.nameProject.setText(listProject.get(i).name);
+				panelBtnS.nameProjectText(listProject.get(i).name);
 				
 			}
 		}
+	}
+	
+	public int getIndexSelectedProject() {
+		return indexProjectSelected;
+	}
+	
+	public Project getElementListProject(int index) {
+		return listProject.get(index);
+	}
+	
+	public void removeProject(int index) {
+		listProject.remove(index);
+	}
+	
+	public void changeIndexSelection(int index) {
+		indexProjectSelected = index;
 	}
 	
 	public void save() {

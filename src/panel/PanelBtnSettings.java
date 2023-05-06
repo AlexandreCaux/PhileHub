@@ -1,4 +1,4 @@
-package main;
+package panel;
 
 import java.awt.Color;
 import java.awt.Desktop;
@@ -15,6 +15,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileSystemView;
+
+import main.ProjectManager;
 
 public class PanelBtnSettings extends JPanel {
 	
@@ -59,7 +61,7 @@ public class PanelBtnSettings extends JPanel {
 		nameProject.setBounds(900,140,150,30);
 		nameProject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				panel.projectM.listProject.get(panel.projectM.indexProjectSelected).changeName(nameProject.getText());
+				panel.projectM.getElementListProject(panel.projectM.getIndexSelectedProject()).changeName(nameProject.getText());
 				panel.projectM.save();
 			}
 		});
@@ -69,8 +71,8 @@ public class PanelBtnSettings extends JPanel {
 		removeBtn.setText("Delete this Project");
 		removeBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-			panel.projectM.listProject.remove(panel.projectM.indexProjectSelected);
-			panel.projectM.indexProjectSelected = -1;
+			panel.projectM.removeProject(panel.projectM.getIndexSelectedProject());
+			panel.projectM.changeIndexSelection(-1);
 			panel.projectM.save();
 			removeBtn();
 		    }
@@ -86,7 +88,7 @@ public class PanelBtnSettings extends JPanel {
 				int returnValue=choose.showOpenDialog(addPathBtn);
 				if(returnValue==JFileChooser.APPROVE_OPTION){
 				   String path =choose.getSelectedFile().getAbsolutePath();
-				   panel.projectM.listProject.get(panel.projectM.indexProjectSelected).addPath(path);
+				   panel.projectM.getElementListProject(panel.projectM.getIndexSelectedProject()).addPath(path);
 				   panel.projectM.save();
 				   removeBtn();
 				   addBtn(panel.projectM);
@@ -99,7 +101,7 @@ public class PanelBtnSettings extends JPanel {
 		removePathBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				String pathToRemove = pathSelection.getSelectedItem().toString();
-				panel.projectM.listProject.get(panel.projectM.indexProjectSelected).removePath(pathToRemove);
+				panel.projectM.getElementListProject(panel.projectM.getIndexSelectedProject()).removePath(pathToRemove);
 				panel.projectM.save();
 				removeBtn();
 				addBtn(panel.projectM);
@@ -108,13 +110,17 @@ public class PanelBtnSettings extends JPanel {
 		
 	}
 	
+	public void nameProjectText(String text){
+		 nameProject.setText(text);
+	}
+	
 	public void addBtn(ProjectManager projectM) {
 		
 		this.add(addPathBtn);
 		this.add(removePathBtn);
 		this.add(removeBtn);
 		this.add(nameProject);
-		for(String path : projectM.listProject.get(projectM.indexProjectSelected).listPath) {
+		for(String path : projectM.getElementListProject(projectM.getIndexSelectedProject()).getListPath()) {
 			pathSelection.addItem(path);
 		}
 		this.add(pathSelection);

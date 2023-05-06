@@ -1,4 +1,4 @@
-package main;
+package panel;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -17,6 +17,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+
+import main.ProjectManager;
 
 
 
@@ -129,7 +131,7 @@ public class Panel extends JPanel implements Runnable {
 		projectM.draw(g2);
 		
 		drawInterface(g2);
-		if(projectM.indexProjectSelected != -1) {
+		if(projectM.getIndexSelectedProject() != -1) {
 			drawTextSettings(g2);
 		}
 		

@@ -1,4 +1,4 @@
-package main;
+package panel;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import main.Project;
 
 public class PanelBtnNew extends JPanel{
 

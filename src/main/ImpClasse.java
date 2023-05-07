@@ -111,6 +111,8 @@ public class ImpClasse extends UnicastRemoteObject implements Hello {
     @Override
     public void addProject(Project project) {
     	
+    	System.out.println("ouai ! ");
+    	
     	File file = new File("dataProject.txt");
     	byte fileData[] = new byte[(int) file.length()];
         FileInputStream inputStream = null;

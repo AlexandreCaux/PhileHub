@@ -1,42 +1,24 @@
 package main;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.Objects;
 
 public class FileManager extends Thread{
-    public File c;
-    public File s;
-    boolean net;
-    static boolean sserv = false;
-    static boolean dserv = false;
-    static Hello stub;
-    public FileManager(String a, String b, boolean net){
-        this.c = new File(a);
-        if(net){
-            this.s = stub.selectFile(b);
-        }
-        else{
-            this.s = new File(b);
-        }
-        this.net = net;
+    Project p;
+    public FileManager(Project proj){
+        this.p = proj;
     }
 
     public void run(){
         while(true){
-            if(net){
-                try {
-                    Registry reg = LocateRegistry.getRegistry("127.0.0.1", 18532);
-                    stub = (Hello) Naming.lookup(String.format("rmi://%s:%d/ImpClasse","127.0.0.1",18532));
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            sychronize(this.c,this.s);
+            synchronize();
             try {
                 Thread.sleep(60000);
             }
@@ -47,21 +29,13 @@ public class FileManager extends Thread{
         }
     }
 
-    /*
-    public static void main(String[] args){
-        String a = "C:\\Users\\alexa\\OneDrive\\Travail\\1_Info\\1.12 Java\\Projet\\TestsLocal\\one";
-        String b = "C:\\Users\\alexa\\OneDrive\\Travail\\1_Info\\1.12 Java\\Projet\\TestsLocal\\two";
-        new FileManager(a,b).start();
-    }
-     */
-
-    public static void copyfilesrmi(File source,File target){
-        if(sserv){
+    public static void copyfilesrmi(PathOfProject source,PathOfProject dest){
+        if(!(source.isLocal())){
             //retrieve file data
             //put it in the right place
             try {
-                byte[] data = stub.downloadFile(source.toString());
-                try (FileOutputStream outputStream = new FileOutputStream(target.toString())) {
+                byte[] data = source.serv.downloadFile(source.toString());
+                try (FileOutputStream outputStream = new FileOutputStream(dest.path)) {
                     outputStream.write(data);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -74,64 +48,71 @@ public class FileManager extends Thread{
         else{ //the destination is the server
             //send the data
             try {
-                byte fileData[] = new byte[(int) source.length()];
-                FileInputStream inputStream = new FileInputStream(source);
+                File fsource = new File(source.path);
+                byte fileData[] = new byte[(int) fsource.length()];
+                FileInputStream inputStream = new FileInputStream(fsource);
                 inputStream.read(fileData);
                 inputStream.close();
-                stub.uploadFile(fileData,target.toString());
+                dest.serv.uploadFile(fileData, dest.path);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
-    public void copy(File ps,File pd) {
+    public void copy(PathOfProject source,PathOfProject dest) {
+        File sf = new File(source.path);
+        File df = new File(source.path);
         File[] lf;
-        if(sserv){ //la source est le serveur
-            lf = stub.listFiles(ps);
+        if(!(source.isLocal())){ //la source est le serveur
+            lf = source.serv.listFiles(sf);
         } else {
-            lf = ps.listFiles();
+            lf = sf.listFiles();
         }
             for (File f : lf){
                 File sc;
                 File dc;
-                if(sserv) {
-                    sc = stub.selectFilewParent(ps,f.getName());
-                    dc = new File(pd, f.getName());
+                if(!(source.isLocal())) {
+                    sc = source.serv.selectFilewParent(sf,f.getName());
+                    dc = new File(df, f.getName());
                 }
-                else if(dserv) { //la destination est le serveur
-                    sc= new File(ps, f.getName());
-                    dc = stub.selectFilewParent(pd,f.getName());
+                else if(!(dest.isLocal())) { //la destination est le serveur
+                    sc= new File(sf, f.getName());
+                    dc = dest.serv.selectFilewParent(df,f.getName());
                 }
                 else {
-                    sc= new File(ps, f.getName());
-                    dc = new File(pd, f.getName());
+                    sc= new File(sf, f.getName());
+                    dc = new File(df, f.getName());
                 }
+                PathOfProject nsource = new PathOfProject(sc.toString(), source.ip);
+                nsource.serv = source.serv;
+                PathOfProject ndest = new PathOfProject(dc.toString(), source.ip);
+                ndest.serv = dest.serv;
 
                 if (f.isDirectory()) {
                     if (dc.exists()) {
-                        copy(sc, dc);
+                        copy(nsource, ndest);
                     } else {
-                        if(dserv){
-                            stub.createdir(dc);
+                        if(!(dest.isLocal())){
+                            dest.serv.createdir(dc);
                         }
                         else{
                             dc.mkdir();
                         }
-                        copy(sc, dc);
+                        copy(nsource, ndest);
                     }
                 }
                 else {
                     boolean ex = false;
                     long sclm=0;
                     long dclm=0;
-                    if(sserv){
+                    if(!(source.isLocal())){
                         dclm=dc.lastModified();
-                        sclm=stub.lmodified(sc);
+                        sclm=source.serv.lmodified(sc);
                     }
-                    else if(dserv){
-                        ex=stub.fexist(dc);
-                        dclm=stub.lmodified(dc);
+                    else if(!(dest.isLocal())){
+                        ex=dest.serv.fexist(dc);
+                        dclm=dest.serv.lmodified(dc);
                         sclm=sc.lastModified();
                     }
                     else{
@@ -139,14 +120,14 @@ public class FileManager extends Thread{
                     }
                     if(ex){//check the last modified date
                         if (!(sclm == dclm)){
-                            if(dserv){
-                                stub.delf(dc);
+                            if(!(dest.isLocal())){
+                                dest.serv.delf(dc);
                             }
                             else{
                                 dc.delete();
                             }
-                                if(net){
-                                    copyfilesrmi(sc,dc);
+                                if(!(source.isLocal() && dest.isLocal())){
+                                    copyfilesrmi(nsource,ndest);
                                 }
                                 else{
                                     try {
@@ -158,8 +139,8 @@ public class FileManager extends Thread{
                             }
                         }
                     else {
-                        if(net){
-                            copyfilesrmi(sc,dc);
+                        if(!(source.isLocal() && dest.isLocal())){
+                            copyfilesrmi(nsource,ndest);
                         }
                         else{
                             try {
@@ -183,30 +164,36 @@ public class FileManager extends Thread{
         return directoryToBeDeleted.delete();
     }
 
-    public static void rmdiff(File ps,File pd){
+    public static void rmdiff(PathOfProject source,PathOfProject dest){
         File[] lf;
-        if(dserv){ //la destination est le serveur
-            lf = stub.listFiles(pd);
+        File fsource = new File(source.path);
+        File fdest = new File(dest.path);
+        if(!(source.isLocal())){ //la destination est le serveur
+            lf = source.serv.listFiles(fdest);
         } else {
-            lf = pd.listFiles();
+            lf = fdest.listFiles();
         }
         for(File f : lf){
-            File sc = new File(ps,f.getName());
-            File dc = new File(pd,f.getName());
+            File sc = new File(fsource,f.getName());
+            File dc = new File(fdest,f.getName());
             if(f.isDirectory()){
                 boolean a;
-                if(sserv){
-                    a=stub.fexist(sc);
+                if(!(source.isLocal())){
+                    a=source.serv.fexist(sc);
                 }
                 else{
                     a=sc.exists();
                 }
                 if(a){
-                    rmdiff(sc,dc);
+                    PathOfProject nsource = new PathOfProject(sc.toString(), source.ip);
+                    nsource.serv = source.serv;
+                    PathOfProject ndest = new PathOfProject(dc.toString(), source.ip);
+                    ndest.serv = dest.serv;
+                    rmdiff(nsource,ndest);
                 }
                 else{
-                    if(dserv){
-                        stub.deldir(dc);
+                    if(!(dest.isLocal())){
+                        dest.serv.deldir(dc);
                     }
                     else{
                         deleteDirectory(dc);
@@ -215,15 +202,15 @@ public class FileManager extends Thread{
             }
             else {
                 boolean b;
-                if(sserv){
-                    b=stub.fexist(sc);
+                if(!(source.isLocal())){
+                    b=source.serv.fexist(sc);
                 }
                 else{
                     b=sc.exists();
                 }
                 if(!b) {
-                    if(dserv){
-                        stub.delf(dc);
+                    if(!(dest.isLocal())){
+                        dest.serv.delf(dc);
                     }
                     else {
                         dc.delete();
@@ -233,38 +220,43 @@ public class FileManager extends Thread{
         }
     }
 
-    public static File whatsource(File fserv,File fclient){
-        long fslm= stub.lmodified(fserv);
-        long fclm= fclient.lastModified();
-        if(fslm > fclm){
-            return fserv;
+    public PathOfProject whatsource() { //NB:all serv will be initialized
+        PathOfProject src = null;
+        long lmd = 0;
+        for (PathOfProject ppath : p.getListPath()) {
+            if (ppath.isLocal()) {
+                File f = new File(ppath.path);
+                if (f.lastModified() > lmd) {
+                    lmd = f.lastModified();
+                    src = ppath;
+                }
+            } else { //path is not local
+                try {
+                    Registry reg = LocateRegistry.getRegistry(ppath.ip, 18532); //ip = 127.0.0.1
+                    ppath.serv = (Hello) Naming.lookup(String.format("rmi://%s:%d/ImpClasse", ppath.ip, 18532));
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                File fs = new File(ppath.path);
+                if (ppath.serv.lmodified(fs) > lmd) {
+                    lmd = ppath.serv.lmodified(fs);
+                    src = ppath;
+                }
+            }
         }
-        else if(fslm < fclm){
-            return fclient;
-        }
-        else{ //Files are already synchronized
-            return null;
-        }
-
+        return src;
     }
 
-    public void sychronize(File c, File s){
-        if(whatsource(c,s)==null){
-            return;
-        }
-        else if(whatsource(c,s)==c){
-            if(net){
-                dserv = true;
+    public void synchronize(){
+        PathOfProject source = whatsource();
+        //synchronize by pairs including source everytime
+        for (PathOfProject dest : p.getListPath()){
+            if(!(dest.equals(source)) && !(!source.isLocal() && !dest.isLocal())){
+                //destination cannot be the same as source
+                //if both source and destination are on other devices then this one is not concerned
+                copy(source,dest);
+                rmdiff(source,dest);
             }
-            copy(c,s);
-            rmdiff(c,s);
-        }
-        else{
-            if(net){
-                sserv = true;
-            }
-            copy(s,c);
-            rmdiff(s,c);
         }
     }
 }

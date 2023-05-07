@@ -4,6 +4,7 @@ public class PathOfProject {
 
 	String ip;
 	String path;
+	Hello serv;
 	
 	public PathOfProject(String path, String ip) {
 		this.ip = ip;

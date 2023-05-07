@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -9,6 +10,8 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.LinkedList;
+import java.util.List;
 
 import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
 
@@ -49,15 +52,22 @@ public class FileManager extends Thread{
         }
     }
 
-    public void copy(PathOfProject source,PathOfProject dest) {
+    public void copy(PathOfProject source,PathOfProject dest) throws RemoteException {
         File sf = new File(source.path);
         File df = new File(dest.path);
-        File[] lf;
+        List<File> lf = new LinkedList<>();
+        List<String> lsf = new LinkedList<>();
         if(!(source.isLocal())){ //la source est le serveur
-            lf = source.serv.listFiles(sf);
+            lsf = source.serv.listFiles(sf);
+            for(String s : lsf){
+                File f = new File(s);
+                lf.add(f);
+            }
         }
         else {
-            lf = sf.listFiles();
+            for(File f : sf.listFiles()){
+                lf.add(f);
+            }
         }
         for (File f : lf){
             File sc;
@@ -155,14 +165,21 @@ public class FileManager extends Thread{
         return directoryToBeDeleted.delete();
     }
 
-    public static void rmdiff(PathOfProject source,PathOfProject dest){
-        File[] lf;
+    public static void rmdiff(PathOfProject source,PathOfProject dest) throws RemoteException {
+        List<File> lf = new LinkedList<>();
+        List<String> lsf = new LinkedList<>();
         File fsource = new File(source.path);
         File fdest = new File(dest.path);
         if(!(source.isLocal())){ //la destination est le serveur
-            lf = source.serv.listFiles(fdest);
+            lsf = source.serv.listFiles(fdest);
+            for(String s : lsf){
+                File f = new File(s);
+                lf.add(f);
+            }
         } else {
-            lf = fdest.listFiles();
+            for(File f : fdest.listFiles()){
+                lf.add(f);
+            }
         }
         for(File f : lf){
             File sc = new File(fsource,f.getName());
@@ -211,7 +228,7 @@ public class FileManager extends Thread{
         }
     }
 
-    public PathOfProject whatsource() { //NB:all serv will be initialized
+    public PathOfProject whatsource() throws RemoteException { //NB:all serv will be initialized
         PathOfProject src = null;
         long lmd = 0;
         for (PathOfProject ppath : p.getListPath()) {
@@ -238,7 +255,7 @@ public class FileManager extends Thread{
         return src;
     }
 
-    public void synchronize(){
+    public void synchronize() throws RemoteException {
         PathOfProject source = whatsource();
         //synchronize by pairs including source everytime
         for (PathOfProject dest : p.getListPath()){

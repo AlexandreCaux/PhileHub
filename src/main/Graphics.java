@@ -53,7 +53,7 @@ public class Graphics {
 	public static void main(String[] args) {
 		
 		configWindow();
-		//Server.main(args);
+		Server.main(args);
         
         
 		

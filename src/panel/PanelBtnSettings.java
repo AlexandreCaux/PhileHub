@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.rmi.RemoteException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -118,7 +119,11 @@ public class PanelBtnSettings extends JPanel {
 					   panel.projectM.getSelectionedProject().addPath(pathString, "0");
 					   if(panel.projectM.getSelectionedProject().getListPath().size() != 0) {
 						   FileManager fileM = new FileManager(panel.projectM.getSelectionedProject());
-						   fileM.copy(panel.projectM.getSelectionedProject().getListPath().get(0), new PathOfProject(pathString,"0"));
+						   try {
+							   fileM.copy(panel.projectM.getSelectionedProject().getListPath().get(0), new PathOfProject(pathString,"0"));
+						   } catch (RemoteException ex) {
+							   throw new RuntimeException(ex);
+						   }
 					   }
 					   panel.projectM.save();
 					   removeBtn();

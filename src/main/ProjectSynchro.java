@@ -56,8 +56,12 @@ public class ProjectSynchro implements Runnable {
         	listFileM.clear();
         	for(Project project : panel.projectM.getListProject()) {
         		FileManager fileM = new FileManager(project);
-        		fileM.synchronize();
-        	}
+				try {
+					fileM.synchronize();
+				} catch (RemoteException e) {
+					throw new RuntimeException(e);
+				}
+			}
         	
         	try {
 				Thread.sleep(1000);

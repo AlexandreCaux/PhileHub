@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.LinkedList;
+import java.util.List;
 
 // implémenter l'interface créée à l'étape 1
 public class ImpClasse extends UnicastRemoteObject implements Hello {
@@ -60,7 +62,13 @@ public class ImpClasse extends UnicastRemoteObject implements Hello {
     }
 
     @Override
-    public File[] listFiles(File f){ return(f.listFiles());}
+    public List<String> listFiles(File f){
+        List<String> flist = new LinkedList<>();
+        for(File a : f.listFiles()){
+            flist.add(a.toString());
+        }
+        return(flist);
+    }
 
     @Override
     public File selectFilewParent(File parent,String child){

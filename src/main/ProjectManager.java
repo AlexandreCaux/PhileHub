@@ -106,7 +106,7 @@ public class ProjectManager {
 			data.createNewFile();
 			FileWriter writer = new FileWriter("dataProject.txt");
 			for(Project project : listProject) {
-				writer.write(project.name + "{\n" + project.dateOfCreation + "\n" );
+				writer.write(project.name + "{\n" + project.dateOfCreation + ")\n" );
 				for(PathOfProject path : project.listPath) {
 					writer.write(path.getIP() + ": " + path.getPath() + "\n");
 				}
@@ -129,7 +129,7 @@ public class ProjectManager {
 			String name = line.substring(0, line.length() - 1);
 			Project project = new Project(name);
 			line = data.readLine();
-			project.changeDateCreation(line);
+			project.changeDateCreation(line.substring(0,line.length()-1));
 			line = data.readLine();
 			while(!line.equals("}")) {
 				String[] separationPath = line.split(": ");

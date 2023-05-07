@@ -66,7 +66,7 @@ public class Graphics {
 		Panel panel = new Panel(window, panelBtnS);
 		ProjectSynchro projectS = new ProjectSynchro(panel);
 		panel.setBounds(0,0,1280,736);
-		panelBtnS.createBtn(panel, panelNewP, panelBtnN, panelBtnNet, panelNet);
+		panelBtnS.createBtn(panel, panelNewP, panelBtnN, panelBtnNet, panelNet,projectS);
 		panelBtnN.createBtn(panel,panelNewP, panelBtnS);
 		panelBtnNet.createBtn(panel,panelBtnS,panelNet,projectS);
 		
@@ -87,7 +87,6 @@ public class Graphics {
 		window.add(layeredPane);	
 		window.setLocationRelativeTo(null);
 		
-		panel.setup();
 		panel.startThread();
 		projectS.run();
 		

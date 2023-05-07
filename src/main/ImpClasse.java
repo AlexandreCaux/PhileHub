@@ -137,7 +137,7 @@ public class ImpClasse extends UnicastRemoteObject implements Hello {
         
         String infos = new String(fileData);
 		infos = infos.substring(0,infos.length()-1);
-		infos += project.name + "{\n" + project.dateOfCreation +"\n";
+		infos += project.name + "{\n" + project.dateOfCreation +")\n";
 		for(PathOfProject path : project.getListPath()) {
 			infos += path.getIP() + ": " + path.getPath() + "\n}\n";
 		}
@@ -168,4 +168,120 @@ public class ImpClasse extends UnicastRemoteObject implements Hello {
 		}		
     }
     
+    
+    @Override
+    public void addPath(Project project,PathOfProject path) {
+    	
+    	File file = new File("dataProject.txt");
+    	byte fileData[] = new byte[(int) file.length()];
+        FileInputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(file);
+		} catch (FileNotFoundException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+        try {
+            if (inputStream != null) {
+                inputStream.read(fileData);
+            }
+        } catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+        try {
+			inputStream.close();
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+        
+        String infos = new String(fileData);
+        String[] separatedInfos = infos.split(")\n");
+        if(separatedInfos.length != 1) {
+        	
+        	infos = separatedInfos[0] + ")\n" + path.getIP() + ": " + path.getPath() +"\n" + separatedInfos[1];
+    		
+            FileWriter writer=null;
+    		try {
+    			writer = new FileWriter("dataProject.txt");
+    		} catch (IOException e1) {
+    			// TODO Auto-generated catch block
+    			e1.printStackTrace();
+    		}
+    		try {
+    			if(writer !=null) {
+    				writer.write(infos);
+    			}
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    		try {
+    			writer.close();
+    			writer.flush();
+    			System.out.println("clossingfile");
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}		
+        }
+    }
+
+	@Override
+	public void removePath(Project project, PathOfProject path) {
+		File file = new File("dataProject.txt");
+    	byte fileData[] = new byte[(int) file.length()];
+        FileInputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(file);
+		} catch (FileNotFoundException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+        try {
+            if (inputStream != null) {
+                inputStream.read(fileData);
+            }
+        } catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+        try {
+			inputStream.close();
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+        
+        String infos = new String(fileData);
+        String[] separatedInfos = infos.split(path.getIP() + ": " + path.getPath() + "\n");
+        if(separatedInfos.length != 1) {
+        	infos = separatedInfos[0] + separatedInfos[1];
+    		
+            FileWriter writer=null;
+    		try {
+    			writer = new FileWriter("dataProject.txt");
+    		} catch (IOException e1) {
+    			// TODO Auto-generated catch block
+    			e1.printStackTrace();
+    		}
+    		try {
+    			if(writer !=null) {
+    				writer.write(infos);
+    			}
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    		try {
+    			writer.close();
+    			System.out.println("clossingfile");
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}		
+        }
+	}
+
 }

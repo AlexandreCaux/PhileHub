@@ -1,5 +1,6 @@
 package main;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -47,12 +48,54 @@ public class ProjectSynchro extends Thread implements Serializable {
         Hello serv = (Hello) Naming.lookup(String.format("rmi://%s:%d/ImpClasse", ip, 18532));
 		serv.addProject(projectClient);
 		//lancer dans projectM addProject(projectClient)
-	}	
+	}
 	
+	public void removePathProject(Project project,PathOfProject path) throws UnknownHostException, SocketException, RemoteException, MalformedURLException, NotBoundException{
+		for(PathOfProject pathProject : project.getListPath()) {
+			final DatagramSocket datagramSocket = new DatagramSocket();
+		    datagramSocket.connect(InetAddress.getByName("8.8.8.8"), 12345);
+			String ipLocal = datagramSocket.getLocalAddress().getHostAddress();
+			if(!pathProject.isLocal()) {
+				Registry reg = LocateRegistry.getRegistry(path.getIP(), 18532);
+		        Hello serv = (Hello) Naming.lookup(String.format("rmi://%s:%d/ImpClasse", path.getIP(), 18532));
+				if(ipLocal.equals(path.getIP())) {
+					serv.addPath(project, new PathOfProject(path.getPath(),"0"));
+				}
+				else {
+					serv.addPath(project, path);
+				}
+			}
+		}
+	}
+	
+	public void addPathProject(Project project, PathOfProject path) throws UnknownHostException, SocketException, RemoteException, MalformedURLException, NotBoundException{
+		for(PathOfProject pathProject : project.getListPath()) {
+			final DatagramSocket datagramSocket = new DatagramSocket();
+		    datagramSocket.connect(InetAddress.getByName("8.8.8.8"), 12345);
+			String ipLocal = datagramSocket.getLocalAddress().getHostAddress();
+			if(!pathProject.isLocal()) {
+				Registry reg = LocateRegistry.getRegistry(path.getIP(), 18532);
+		        Hello serv = (Hello) Naming.lookup(String.format("rmi://%s:%d/ImpClasse", path.getIP(), 18532));
+				if(ipLocal.equals(path.getIP())) {
+					serv.removePath(project, new PathOfProject(path.getPath(),"0"));
+				}
+				else {
+					serv.removePath(project, path);
+				}
+			}
+		}
+	}
 	
 
     public void run(){
         while(true){
+        	
+        	try {
+				panel.projectM.loadSave();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
         	
         	listFileM.clear();
         	for(Project project : panel.projectM.getListProject()) {

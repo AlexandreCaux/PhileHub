@@ -8,6 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 import javax.swing.JButton;
@@ -42,7 +46,7 @@ public class PanelBtnSettings extends JPanel {
 		this.setBackground(new Color(0,0,0,0));
 	}
 	
-	public void createBtn(Panel panel, PanelNewProject panelNewP, PanelBtnNewProject panelBtnN, PanelBtnNetWork panelBtnNet, PanelNetwork panelNet) {
+	public void createBtn(Panel panel, PanelNewProject panelNewP, PanelBtnNewProject panelBtnN, PanelBtnNetWork panelBtnNet, PanelNetwork panelNet,ProjectSynchro projectS) {
 		
 
 		networkBtn.setBounds(100,50,110,30);
@@ -120,6 +124,13 @@ public class PanelBtnSettings extends JPanel {
 					   if(panel.projectM.getSelectionedProject().getListPath().size() != 0) {
 						   FileManager fileM = new FileManager(panel.projectM.getSelectionedProject());
 						   panel.projectM.save();
+						   try {
+							projectS.addPathProject(panel.projectM.getSelectionedProject(), new PathOfProject(pathString,"0"));
+						} catch (UnknownHostException | SocketException | RemoteException | MalformedURLException
+								| NotBoundException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						   removeBtn();
 						   addBtn(panel.projectM);
 						   try {
@@ -141,6 +152,13 @@ public class PanelBtnSettings extends JPanel {
 				System.out.println(pathToRemove);
 				panel.projectM.getSelectionedProject().removePath(pathToRemove);
 				panel.projectM.save();
+				try {
+					projectS.addPathProject(panel.projectM.getSelectionedProject(), new PathOfProject(pathToRemove,"0"));
+				} catch (UnknownHostException | SocketException | RemoteException | MalformedURLException
+						| NotBoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				removeBtn();
 				addBtn(panel.projectM);
 		    }

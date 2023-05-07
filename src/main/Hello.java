@@ -19,4 +19,6 @@ public interface Hello extends Remote{
     public boolean delf(File f) throws RemoteException;
     public boolean deldir(File f) throws RemoteException;
     public void addProject(Project project) throws RemoteException;
+    public void addPath(Project project,PathOfProject path);
+    public void removePath(Project project,PathOfProject path);
 }

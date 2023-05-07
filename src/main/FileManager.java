@@ -10,6 +10,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
+
 public class FileManager extends Thread{
     Project p;
     public FileManager(Project proj){
@@ -18,9 +20,10 @@ public class FileManager extends Thread{
 
     public void run(){
         while(true){
+            System.out.println("Synchronizing ...");
             synchronize();
             try {
-                Thread.sleep(60000);
+                Thread.sleep(6000);
             }
             catch (InterruptedException e) {
                 System.err.println(e.toString());
@@ -37,12 +40,12 @@ public class FileManager extends Thread{
                 byte[] data = source.serv.downloadFile(source.toString());
                 try (FileOutputStream outputStream = new FileOutputStream(dest.path)) {
                     outputStream.write(data);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                } catch (IOException ignored) {
+                    System.out.println("IOException 1 copyfilesrmi");
                 }
             }
-            catch (RemoteException e) {
-                throw new RuntimeException(e);
+            catch (RemoteException ignored) {
+                System.out.println("RemoteException copyfilesrmi");
             }
         }
         else{ //the destination is the server
@@ -54,105 +57,107 @@ public class FileManager extends Thread{
                 inputStream.read(fileData);
                 inputStream.close();
                 dest.serv.uploadFile(fileData, dest.path);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            } catch (IOException ignored) {
+                System.out.println("IOException 2 copyfilesrmi");
             }
         }
     }
 
     public void copy(PathOfProject source,PathOfProject dest) {
         File sf = new File(source.path);
-        File df = new File(source.path);
+        File df = new File(dest.path);
         File[] lf;
         if(!(source.isLocal())){ //la source est le serveur
             lf = source.serv.listFiles(sf);
-        } else {
+        }
+        else {
             lf = sf.listFiles();
         }
-            for (File f : lf){
-                File sc;
-                File dc;
-                if(!(source.isLocal())) {
-                    sc = source.serv.selectFilewParent(sf,f.getName());
-                    dc = new File(df, f.getName());
-                }
-                else if(!(dest.isLocal())) { //la destination est le serveur
-                    sc= new File(sf, f.getName());
-                    dc = dest.serv.selectFilewParent(df,f.getName());
-                }
-                else {
-                    sc= new File(sf, f.getName());
-                    dc = new File(df, f.getName());
-                }
-                PathOfProject nsource = new PathOfProject(sc.toString(), source.ip);
-                nsource.serv = source.serv;
-                PathOfProject ndest = new PathOfProject(dc.toString(), source.ip);
-                ndest.serv = dest.serv;
+        for (File f : lf){
+            File sc;
+            File dc;
+            if(!(source.isLocal())) {
+                sc = source.serv.selectFilewParent(sf,f.getName());
+                dc = new File(df, f.getName());
+            }
+            else if(!(dest.isLocal())) { //la destination est le serveur
+                sc= new File(sf, f.getName());
+                dc = dest.serv.selectFilewParent(df,f.getName());
+            }
+            else {
+                sc= new File(sf, f.getName());
+                dc = new File(df, f.getName());
+            }
+            PathOfProject nsource = new PathOfProject(sc.toString(), source.ip);
+            nsource.serv = source.serv;
+            PathOfProject ndest = new PathOfProject(dc.toString(), dest.ip);
+            ndest.serv = dest.serv;
 
-                if (f.isDirectory()) {
-                    if (dc.exists()) {
-                        copy(nsource, ndest);
-                    } else {
-                        if(!(dest.isLocal())){
-                            dest.serv.createdir(dc);
-                        }
-                        else{
-                            dc.mkdir();
-                        }
-                        copy(nsource, ndest);
-                    }
+            if (f.isDirectory()) {
+                if (dc.exists()) {
+                    copy(nsource, ndest);
                 }
                 else {
-                    boolean ex = false;
-                    long sclm=0;
-                    long dclm=0;
-                    if(!(source.isLocal())){
-                        dclm=dc.lastModified();
-                        sclm=source.serv.lmodified(sc);
-                    }
-                    else if(!(dest.isLocal())){
-                        ex=dest.serv.fexist(dc);
-                        dclm=dest.serv.lmodified(dc);
-                        sclm=sc.lastModified();
+                    if(!(dest.isLocal())){
+                        dest.serv.createdir(dc);
                     }
                     else{
-                        ex=dc.exists();
+                        dc.mkdir();
                     }
-                    if(ex){//check the last modified date
-                        if (!(sclm == dclm)){
-                            if(!(dest.isLocal())){
-                                dest.serv.delf(dc);
-                            }
-                            else{
-                                dc.delete();
-                            }
-                                if(!(source.isLocal() && dest.isLocal())){
-                                    copyfilesrmi(nsource,ndest);
-                                }
-                                else{
-                                    try {
-                                        Files.copy(sc.toPath(), dc.toPath());
-                                    } catch (IOException e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                }
-                            }
-                        }
-                    else {
-                        if(!(source.isLocal() && dest.isLocal())){
-                            copyfilesrmi(nsource,ndest);
+                    copy(nsource, ndest);
+                }
+            }
+            else {
+                boolean ex = false;
+                long sclm=0;
+                long dclm=0;
+                if(!(source.isLocal())){
+                    dclm=dc.lastModified();
+                    sclm=source.serv.lmodified(sc);
+                }
+                else if(!(dest.isLocal())){
+                    ex=dest.serv.fexist(dc);
+                    dclm=dest.serv.lmodified(dc);
+                    sclm=sc.lastModified();
+                }
+                else{
+                    ex=dc.exists();
+                }
+                if(ex){//check the last modified date
+                    if (!(sclm == dclm)){
+                        if(!(dest.isLocal())){
+                            dest.serv.delf(dc);
                         }
                         else{
-                            try {
-                                Files.copy(sc.toPath(), dc.toPath());
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
+                            dc.delete();
+                        }
+                            if(!(source.isLocal() && dest.isLocal())){
+                                copyfilesrmi(nsource,ndest);
                             }
+                            else{
+                                try {
+                                    Files.copy(sc.toPath(), dc.toPath(), COPY_ATTRIBUTES);
+                                } catch (IOException ignored) {
+                                    System.out.println("IOException 1 copy");
+                                }
+                            }
+                        }
+                    }
+                else {
+                    if(!(source.isLocal() && dest.isLocal())){
+                        copyfilesrmi(nsource,ndest);
+                    }
+                    else{
+                        try {
+                            Files.copy(sc.toPath(), dc.toPath(), COPY_ATTRIBUTES);
+                        } catch (IOException ignored) {
+                            System.out.println("IOException 2 uploadfile");
                         }
                     }
                 }
             }
         }
+    }
 
     public static boolean deleteDirectory(File directoryToBeDeleted) {
         File[] allContents = directoryToBeDeleted.listFiles();

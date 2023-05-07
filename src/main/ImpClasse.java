@@ -25,11 +25,11 @@ public class ImpClasse extends UnicastRemoteObject implements Hello {
         try {
             try (FileOutputStream outputStream = new FileOutputStream(targetpath)) {
                 outputStream.write(fileData);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            } catch (IOException ignored) {
+                System.out.println("IOException uploadfile");
             }
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+        } catch (RuntimeException ignored) {
+            System.out.println("IOException uploadfile");
         }
     }
 
@@ -43,7 +43,8 @@ public class ImpClasse extends UnicastRemoteObject implements Hello {
             inputStream.close();
             return fileData;
         } catch (IOException e){
-            throw new RemoteException("Error downloading file: " + e.getMessage());
+            System.out.println("IOException uploadfile");
+            return null;
         }
     }
 

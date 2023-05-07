@@ -159,10 +159,9 @@ public class ImpClasse extends UnicastRemoteObject implements Hello {
 			e.printStackTrace();
 		}
 		try {
-			while(writer != null) {
-				writer.close();
-				System.out.println("clossingfile");
-			}
+			writer.close();
+			writer.flush();
+			System.out.println("clossingfile");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

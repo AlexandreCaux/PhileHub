@@ -237,6 +237,7 @@ public class FileManager extends Thread implements Serializable {
                 }
             } else { //path is not local
                 try {
+                	System.out.println(ppath.ip);
                     Registry reg = LocateRegistry.getRegistry(ppath.ip, 18532); //ip = 127.0.0.1
                     ppath.serv = (Hello) Naming.lookup(String.format("rmi://%s:%d/ImpClasse", ppath.ip, 18532));
                 } catch (Exception e) {

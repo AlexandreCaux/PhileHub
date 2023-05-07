@@ -119,15 +119,15 @@ public class PanelBtnSettings extends JPanel {
 					   panel.projectM.getSelectionedProject().addPath(pathString, "0");
 					   if(panel.projectM.getSelectionedProject().getListPath().size() != 0) {
 						   FileManager fileM = new FileManager(panel.projectM.getSelectionedProject());
+						   panel.projectM.save();
+						   removeBtn();
+						   addBtn(panel.projectM);
 						   try {
 							   fileM.copy(panel.projectM.getSelectionedProject().getListPath().get(0), new PathOfProject(pathString,"0"));
 						   } catch (RemoteException ex) {
 							   throw new RuntimeException(ex);
 						   }
 					   }
-					   panel.projectM.save();
-					   removeBtn();
-					   addBtn(panel.projectM);
 				   }
 				}
 		    }

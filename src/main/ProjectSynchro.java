@@ -43,8 +43,8 @@ public class ProjectSynchro extends Thread implements Serializable {
 			}
 		}
 		
-		Registry reg = LocateRegistry.getRegistry(ip, 18531);
-        Hello serv = (Hello) Naming.lookup(String.format("rmi://%s:%d/ImpClasse", ip, 18531));
+		Registry reg = LocateRegistry.getRegistry(ip, 18532);
+        Hello serv = (Hello) Naming.lookup(String.format("rmi://%s:%d/ImpClasse", ip, 18532));
 		serv.addProject(projectClient);
 		//lancer dans projectM addProject(projectClient)
 	}	

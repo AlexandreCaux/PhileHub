@@ -28,8 +28,8 @@ public class ProjectSynchro extends Thread implements Serializable {
 	
 	
 	public void sendProject(Project project, String ip) throws UnknownHostException, SocketException, RemoteException, MalformedURLException, NotBoundException {
+		
 		List<PathOfProject> listPathServer = project.getListPath();
-		List<PathOfProject> listPathClient = new LinkedList<PathOfProject>();
 		Project projectClient = new Project(project.getName());
 		for(PathOfProject path : listPathServer) {
 			if(path.isLocal()) {
@@ -43,7 +43,6 @@ public class ProjectSynchro extends Thread implements Serializable {
 				projectClient.addPath(path.getPath(), path.getIP());
 			}
 		}
-		
 		Registry reg = LocateRegistry.getRegistry(ip, 18532);
         Hello serv = (Hello) Naming.lookup(String.format("rmi://%s:%d/ImpClasse", ip, 18532));
 		serv.addProject(projectClient);

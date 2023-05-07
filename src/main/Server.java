@@ -12,7 +12,7 @@ public class Server{
             Registry registry = LocateRegistry.createRegistry(18531);
             ImpClasse service = new ImpClasse();
             Naming.rebind(String.format("rmi://%s:%d/ImpClasse","127.0.0.1",18531), service);
-            System.out.println("Le Serveur est prêt...");
+            System.out.println("Server ready");
         } catch (Exception e) {
             System.err.println(e.toString());
             e.printStackTrace();

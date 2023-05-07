@@ -120,8 +120,10 @@ public class ImpClasse extends UnicastRemoteObject implements Hello {
 			e2.printStackTrace();
 		}
         try {
-			inputStream.read(fileData);
-		} catch (IOException e2) {
+            if (inputStream != null) {
+                inputStream.read(fileData);
+            }
+        } catch (IOException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}

@@ -158,7 +158,7 @@ public class PanelBtnSettings extends JPanel {
 		this.add(removePathBtn);
 		this.add(removeBtn);
 		this.add(nameProject);
-		for(PathOfProject path : projectM.getElementListProject(projectM.getIndexSelectedProject()).getListPath()) {
+		for(PathOfProject path : projectM.getSelectionedProject().getListPath()) {
 			if(path.getIP().equals("0")) {
 				pathSelection.addItem("local: " + path.getPath());
 			}

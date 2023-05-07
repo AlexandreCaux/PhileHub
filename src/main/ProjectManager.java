@@ -73,7 +73,7 @@ public class ProjectManager {
 	
 	public Project findProject(String name) {
 		for(Project project : listProject) {
-			if(project.name == name) {
+			if(project.name.equals(name)) {
 				return project;
 			}
 		}

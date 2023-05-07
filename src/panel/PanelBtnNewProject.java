@@ -20,7 +20,7 @@ public class PanelBtnNewProject extends JPanel{
 	JButton cancelBtn = new JButton();
 	String pathSelected = "";
 	
-	public PanelBtnNewProject(PanelNewProject panelNewP) {
+	public PanelBtnNewProject() {
 		this.setBackground(Color.gray);
 		this.setFocusable(true);
 		this.setOpaque(true);

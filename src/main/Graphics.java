@@ -51,22 +51,24 @@ public class Graphics {
 	
 		
 		PanelNewProject panelNewP = new PanelNewProject();
-		PanelBtnNewProject panelBtnN = new PanelBtnNewProject(panelNewP);
+		PanelBtnNewProject panelBtnN = new PanelBtnNewProject();
 		PanelNetwork panelNet = new PanelNetwork(); 
 		PanelBtnNetWork panelBtnNet = new PanelBtnNetWork();
 		
 		PanelBtnSettings panelBtnS = new PanelBtnSettings();
 		Panel panel = new Panel(window, panelBtnS);
 		panel.setBounds(0,0,1280,736);
-		panelBtnS.createBtn(panel, panelNewP, panelBtnN);
+		panelBtnS.createBtn(panel, panelNewP, panelBtnN, panelBtnNet, panelNet);
 		panelBtnN.createBtn(panel,panelNewP, panelBtnS);
+		panelBtnNet.createBtn(panel,panelBtnS,panelNet);
 		
 		
 		JLayeredPane layeredPane = new JLayeredPane();
 		layeredPane.setLayout(null);
 		layeredPane.setBounds(0,0,1280,736);
 	
-		
+		layeredPane.add(panelBtnNet);
+		layeredPane.add(panelNet);
 		layeredPane.add(panelBtnN);
 		layeredPane.add(panelNewP);
 		layeredPane.add(panelBtnS);

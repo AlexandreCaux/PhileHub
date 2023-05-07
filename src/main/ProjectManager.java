@@ -34,9 +34,8 @@ public class ProjectManager {
 	
 	public void addProject(Project p) {
 		listProject.add(p);
-
-		
 	}
+	
 
 	public void scroll(boolean isUp) {
 		int yScrollAdd = 30;
@@ -68,12 +67,20 @@ public class ProjectManager {
 		}
 	}
 	
+	public List<Project> getListProject(){
+		return listProject;
+	}
+	
 	public int getIndexSelectedProject() {
 		return indexProjectSelected;
 	}
 	
 	public Project getElementListProject(int index) {
 		return listProject.get(index);
+	}
+	
+	public Project getSelectionedProject() {
+		return listProject.get(indexProjectSelected);
 	}
 	
 	public void removeProject(int index) {
@@ -90,9 +97,9 @@ public class ProjectManager {
 			data.createNewFile();
 			FileWriter writer = new FileWriter("dataProject.txt");
 			for(Project project : listProject) {
-				writer.write(project.name +" {\n" + project.dateOfCreation + "\n" );
+				writer.write(project.name + " {\n" + project.dateOfCreation + "\n" );
 				for(PathOfProject path : project.listPath) {
-					writer.write(path.getPath() + "\n");
+					writer.write(path.getIp() + " " + path.getPath() + "\n");
 				}
 				writer.write("}\n");
 			}
@@ -109,17 +116,18 @@ public class ProjectManager {
 			String line = data.readLine();
 			
 			while(!line.equals(";")) {
-					String[] separated = line.split(" ");
-					Project project = new Project(separated[0]);
+				String[] separationName = line.split(" ");
+				Project project = new Project(separationName[0]);
+				line = data.readLine();
+				project.changeDateCreation(line);
+				line = data.readLine();
+				while(!line.equals("}")) {
+					String[] separationPath = line.split(" ");
+					project.addPath(separationPath[1], separationPath[0]);
 					line = data.readLine();
-					project.changeDateCreation(line);
-					line = data.readLine();
-					while(!line.equals("}")) {
-						project.addPath(line,"0");
-						line = data.readLine();
-					}
-					listProject.add(project);
-					line = data.readLine();
+				}
+				listProject.add(project);
+				line = data.readLine();
 			}
 	}
 	

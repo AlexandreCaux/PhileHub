@@ -18,4 +18,8 @@ public class PathOfProject {
 		return path;
 	}
 	
+	public String getIp() {
+		return ip;
+	}
+	
 }

@@ -39,7 +39,7 @@ public class PanelBtnSettings extends JPanel {
 		this.setBackground(new Color(0,0,0,0));
 	}
 	
-	public void createBtn(Panel panel, PanelNewProject panelNewP, PanelBtnNewProject panelBtnN) {
+	public void createBtn(Panel panel, PanelNewProject panelNewP, PanelBtnNewProject panelBtnN, PanelBtnNetWork panelBtnNet, PanelNetwork panelNet) {
 		
 
 		networkBtn.setBounds(100,50,110,30);
@@ -47,6 +47,10 @@ public class PanelBtnSettings extends JPanel {
 		networkBtn.setText("Share A Project");
 		networkBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				panelNet.setVisible(true);
+				panelBtnNet.addBtn(panel);
+				panel.disableMouseDetector();
+				disableButtons();
 			}
 		});
 		this.add(networkBtn);
@@ -101,11 +105,19 @@ public class PanelBtnSettings extends JPanel {
 				choose.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				int returnValue=choose.showOpenDialog(addPathBtn);
 				if(returnValue==JFileChooser.APPROVE_OPTION){
-				   String path =choose.getSelectedFile().getAbsolutePath();
-				   panel.projectM.getElementListProject(panel.projectM.getIndexSelectedProject()).addPath(path,"0");
-				   panel.projectM.save();
-				   removeBtn();
-				   addBtn(panel.projectM);
+				   String pathString =choose.getSelectedFile().getAbsolutePath();
+				   boolean alreadyExist = false;
+				   for(PathOfProject path : panel.projectM.getSelectionedProject().getListPath()) {
+					   if(path.getPath().equals(pathString) && path.getIp().equals("0")){
+						   alreadyExist=true;
+					   }
+				   }
+				   if(!alreadyExist) {
+					   panel.projectM.getElementListProject(panel.projectM.getIndexSelectedProject()).addPath(pathString,"0");
+					   panel.projectM.save();
+					   removeBtn();
+					   addBtn(panel.projectM);
+				   }
 				}
 		    }
 		});
@@ -114,8 +126,8 @@ public class PanelBtnSettings extends JPanel {
 		removePathBtn.setText("Remove This Path");
 		removePathBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				String pathToRemove = pathSelection.getSelectedItem().toString();
-				panel.projectM.getElementListProject(panel.projectM.getIndexSelectedProject()).removePath(pathToRemove);
+				String pathToRemove = pathSelection.getSelectedItem().toString().split(" ")[1];
+				panel.projectM.getSelectionedProject().removePath(pathToRemove);
 				panel.projectM.save();
 				removeBtn();
 				addBtn(panel.projectM);
@@ -135,7 +147,12 @@ public class PanelBtnSettings extends JPanel {
 		this.add(removeBtn);
 		this.add(nameProject);
 		for(PathOfProject path : projectM.getElementListProject(projectM.getIndexSelectedProject()).getListPath()) {
-			pathSelection.addItem(path.getPath());
+			if(path.getIp().equals("0")) {
+				pathSelection.addItem("local " + path.getPath());
+			}
+			else {
+				pathSelection.addItem(path.getIp() + " " + path.getPath());
+			}
 		}
 		this.add(pathSelection);
 	}
@@ -155,6 +172,8 @@ public class PanelBtnSettings extends JPanel {
 		addPathBtn.setEnabled(false);
 		nameProject.setEnabled(false);
 		pathSelection.setEnabled(false);
+		networkBtn.setEnabled(false);
+		addProject.setEnabled(false);
 	}
 	public void enableButtons() {
 		removeBtn.setEnabled(true);
@@ -162,6 +181,8 @@ public class PanelBtnSettings extends JPanel {
 		addPathBtn.setEnabled(true);
 		nameProject.setEnabled(true);
 		pathSelection.setEnabled(true);
+		networkBtn.setEnabled(true);
+		addProject.setEnabled(true);
 	}
 	
 	

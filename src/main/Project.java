@@ -23,6 +23,11 @@ public class Project {
 	public void changeDateCreation(String date) {
 		dateOfCreation = date;
 	}
+	
+	public String getName() {
+		return name;
+	}
+	
 	public void changeName(String name) {
 		this.name = name;
 	}
@@ -36,7 +41,7 @@ public class Project {
 	
 	public void removePath(String path) {
 		for(int i=0; i<listPath.size();i++) {
-			if(listPath.get(i).getPath() == path) {
+			if(listPath.get(i).getPath().equals(path)) {
 				listPath.remove(i);
 			}
 		}
@@ -58,7 +63,6 @@ public class Project {
 		g2.drawRect(x, y, boxWidth, boxHeight);
 		g2.drawString(name, x+20, y+20);
 		g2.drawString("Date Of Creation : " + dateOfCreation , x+20, y + 60);
-		
 		
 	}
 	

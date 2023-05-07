@@ -18,20 +18,6 @@ public class FileManager extends Thread{
         this.p = proj;
     }
 
-    public void run(){
-        while(true){
-            System.out.println("Synchronizing ...");
-            synchronize();
-            try {
-                Thread.sleep(6000);
-            }
-            catch (InterruptedException e) {
-                System.err.println(e.toString());
-                e.printStackTrace();
-            }
-        }
-    }
-
     public static void copyfilesrmi(PathOfProject source,PathOfProject dest){
         if(!(source.isLocal())){
             //retrieve file data

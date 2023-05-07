@@ -82,5 +82,8 @@ public class Graphics {
 		panel.setup();
 		panel.startThread();
 		
+		ProjectSynchro projectS = new ProjectSynchro(panel);
+		projectS.run();
+		
 	}	
 }

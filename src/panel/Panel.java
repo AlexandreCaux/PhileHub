@@ -62,7 +62,7 @@ public class Panel extends JPanel implements Runnable {
 
 	//System
 	Thread thread;
-	ProjectManager projectM = new ProjectManager();
+	public ProjectManager projectM = new ProjectManager();
 	MouseDetection mouseD = new MouseDetection(this);
 	MouseWheelDetection mouseWheelD = new MouseWheelDetection(this);
 
@@ -91,7 +91,8 @@ public class Panel extends JPanel implements Runnable {
 
 		while (thread != null) {
 			
-			
+			window.invalidate();
+			window.validate();
 			window.repaint();
 			
 

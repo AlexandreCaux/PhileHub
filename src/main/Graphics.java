@@ -6,6 +6,10 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.URL;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -30,6 +34,7 @@ public class Graphics {
 	int screenWidth = 1280;
 	int screenHeight = 740;
 	
+	
 	public static void configWindow() {
 		window = new JFrame();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,7 +53,9 @@ public class Graphics {
 	public static void main(String[] args) {
 		
 		configWindow();
-	
+		//Server.main(args);
+        
+        
 		
 		PanelNewProject panelNewP = new PanelNewProject();
 		PanelBtnNewProject panelBtnN = new PanelBtnNewProject();
@@ -57,10 +64,11 @@ public class Graphics {
 		
 		PanelBtnSettings panelBtnS = new PanelBtnSettings();
 		Panel panel = new Panel(window, panelBtnS);
+		ProjectSynchro projectS = new ProjectSynchro(panel);
 		panel.setBounds(0,0,1280,736);
 		panelBtnS.createBtn(panel, panelNewP, panelBtnN, panelBtnNet, panelNet);
 		panelBtnN.createBtn(panel,panelNewP, panelBtnS);
-		panelBtnNet.createBtn(panel,panelBtnS,panelNet);
+		panelBtnNet.createBtn(panel,panelBtnS,panelNet,projectS);
 		
 		
 		JLayeredPane layeredPane = new JLayeredPane();
@@ -81,9 +89,8 @@ public class Graphics {
 		
 		panel.setup();
 		panel.startThread();
-		
-		ProjectSynchro projectS = new ProjectSynchro(panel);
 		projectS.run();
+		
 		
 	}	
 }

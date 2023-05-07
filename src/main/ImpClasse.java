@@ -1,14 +1,20 @@
 package main;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 // implémenter l'interface créée à l'étape 1
 public class ImpClasse extends UnicastRemoteObject implements Hello {
+	
+	
     protected ImpClasse() throws RemoteException {
         super();
     }
@@ -92,4 +98,19 @@ public class ImpClasse extends UnicastRemoteObject implements Hello {
         }
         return directoryToBeDeleted.delete();
     }
+    
+    @Override
+    public void addProject(Project project) {
+    	
+		try {
+			BufferedReader data = new BufferedReader(new FileReader("dataProject.txt"));
+			System.out.println(data.toString());
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+        
+    }
+    
 }

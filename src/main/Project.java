@@ -20,6 +20,7 @@ public class Project {
 		dateOfCreation = dtf.format(LocalDateTime.now());
 	}
 	
+	
 	public void changeDateCreation(String date) {
 		dateOfCreation = date;
 	}
@@ -42,6 +43,7 @@ public class Project {
 	public void removePath(String path) {
 		for(int i=0; i<listPath.size();i++) {
 			if(listPath.get(i).getPath().equals(path)) {
+				System.out.println(i);
 				listPath.remove(i);
 			}
 		}

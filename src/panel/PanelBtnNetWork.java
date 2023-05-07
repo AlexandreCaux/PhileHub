@@ -3,6 +3,11 @@ package panel;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -10,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import main.Project;
+import main.ProjectSynchro;
 
 public class PanelBtnNetWork extends JPanel {
 
@@ -27,7 +33,7 @@ public class PanelBtnNetWork extends JPanel {
 		this.setBackground(new Color(0,0,0,0));
 	}
 	
-	public void createBtn(Panel panel,PanelBtnSettings panelBtnS, PanelNetwork panelNet) {
+	public void createBtn(Panel panel,PanelBtnSettings panelBtnS, PanelNetwork panelNet,ProjectSynchro projectS) {
 		
 		projectSelection.setBounds(100,80,400,30);
 		
@@ -49,7 +55,13 @@ public class PanelBtnNetWork extends JPanel {
 		confirmBtn.setBounds(300,200,150,30);
 		confirmBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				
+				try {
+					projectS.sendProject(panel.projectM.findProject(projectSelection.getSelectedItem().toString()), ipAdress.getText());
+				} catch (UnknownHostException | SocketException | RemoteException | MalformedURLException
+						| NotBoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 				
 		});

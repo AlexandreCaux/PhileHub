@@ -5,7 +5,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface Hello extends Remote{
-    void showMsg() throws RemoteException;
+	void showMsg() throws RemoteException;
     public void uploadFile(byte[] fileData, String fileName) throws RemoteException;
     public byte[] downloadFile(String fileName) throws RemoteException;
     public File selectFile(String s);
@@ -17,4 +17,5 @@ public interface Hello extends Remote{
     public long lmodified(File f);
     public boolean delf(File f);
     public boolean deldir(File f);
+    public void addProject(Project project);
 }

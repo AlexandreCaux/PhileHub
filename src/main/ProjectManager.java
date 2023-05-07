@@ -71,6 +71,15 @@ public class ProjectManager {
 		return listProject;
 	}
 	
+	public Project findProject(String name) {
+		for(Project project : listProject) {
+			if(project.name == name) {
+				return project;
+			}
+		}
+		return null;
+	}
+	
 	public int getIndexSelectedProject() {
 		return indexProjectSelected;
 	}
@@ -97,9 +106,9 @@ public class ProjectManager {
 			data.createNewFile();
 			FileWriter writer = new FileWriter("dataProject.txt");
 			for(Project project : listProject) {
-				writer.write(project.name + " {\n" + project.dateOfCreation + "\n" );
+				writer.write(project.name + "{\n" + project.dateOfCreation + "\n" );
 				for(PathOfProject path : project.listPath) {
-					writer.write(path.getIp() + " " + path.getPath() + "\n");
+					writer.write(path.getIP() + ": " + path.getPath() + "\n");
 				}
 				writer.write("}\n");
 			}
@@ -112,23 +121,24 @@ public class ProjectManager {
 	
 	public void loadSave() throws IOException {
 		
-			BufferedReader data = new BufferedReader(new FileReader("dataProject.txt"));
-			String line = data.readLine();
+		listProject.clear();
+		BufferedReader data = new BufferedReader(new FileReader("dataProject.txt"));
+		String line = data.readLine();
 			
-			while(!line.equals(";")) {
-				String[] separationName = line.split(" ");
-				Project project = new Project(separationName[0]);
-				line = data.readLine();
-				project.changeDateCreation(line);
-				line = data.readLine();
-				while(!line.equals("}")) {
-					String[] separationPath = line.split(" ");
-					project.addPath(separationPath[1], separationPath[0]);
-					line = data.readLine();
-				}
-				listProject.add(project);
+		while(!line.equals(";")) {
+			String name = line.substring(0, line.length() - 1);
+			Project project = new Project(name);
+			line = data.readLine();
+			project.changeDateCreation(line);
+			line = data.readLine();
+			while(!line.equals("}")) {
+				String[] separationPath = line.split(": ");
+				project.addPath(separationPath[1], separationPath[0]);
 				line = data.readLine();
 			}
+			listProject.add(project);
+			line = data.readLine();
+		}
 	}
 	
 	

@@ -16,8 +16,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileSystemView;
 
+import main.FileManager;
 import main.PathOfProject;
 import main.ProjectManager;
+import main.ProjectSynchro;
 
 public class PanelBtnSettings extends JPanel {
 	
@@ -108,12 +110,16 @@ public class PanelBtnSettings extends JPanel {
 				   String pathString =choose.getSelectedFile().getAbsolutePath();
 				   boolean alreadyExist = false;
 				   for(PathOfProject path : panel.projectM.getSelectionedProject().getListPath()) {
-					   if(path.getPath().equals(pathString) && path.getIp().equals("0")){
+					   if(path.getPath().equals(pathString) && path.getIP().equals("0")){
 						   alreadyExist=true;
 					   }
 				   }
 				   if(!alreadyExist) {
-					   panel.projectM.getElementListProject(panel.projectM.getIndexSelectedProject()).addPath(pathString,"0");
+					   panel.projectM.getSelectionedProject().addPath(pathString, "0");
+					   if(panel.projectM.getSelectionedProject().getListPath().size() != 0) {
+						   FileManager fileM = new FileManager(panel.projectM.getSelectionedProject());
+						   fileM.copy(panel.projectM.getSelectionedProject().getListPath().get(0), new PathOfProject(pathString,"0"));
+					   }
 					   panel.projectM.save();
 					   removeBtn();
 					   addBtn(panel.projectM);
@@ -126,7 +132,8 @@ public class PanelBtnSettings extends JPanel {
 		removePathBtn.setText("Remove This Path");
 		removePathBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				String pathToRemove = pathSelection.getSelectedItem().toString().split(" ")[1];
+				String pathToRemove = pathSelection.getSelectedItem().toString().split(": ")[1];
+				System.out.println(pathToRemove);
 				panel.projectM.getSelectionedProject().removePath(pathToRemove);
 				panel.projectM.save();
 				removeBtn();
@@ -147,11 +154,11 @@ public class PanelBtnSettings extends JPanel {
 		this.add(removeBtn);
 		this.add(nameProject);
 		for(PathOfProject path : projectM.getElementListProject(projectM.getIndexSelectedProject()).getListPath()) {
-			if(path.getIp().equals("0")) {
-				pathSelection.addItem("local " + path.getPath());
+			if(path.getIP().equals("0")) {
+				pathSelection.addItem("local: " + path.getPath());
 			}
 			else {
-				pathSelection.addItem(path.getIp() + " " + path.getPath());
+				pathSelection.addItem(path.getIP() + ": " + path.getPath());
 			}
 		}
 		this.add(pathSelection);

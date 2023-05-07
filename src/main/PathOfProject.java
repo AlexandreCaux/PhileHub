@@ -19,7 +19,7 @@ public class PathOfProject {
 		return path;
 	}
 	
-	public String getIp() {
+	public String getIP() {
 		return ip;
 	}
 	

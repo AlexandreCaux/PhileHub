@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.RemoteException;
@@ -134,10 +135,35 @@ public class ImpClasse extends UnicastRemoteObject implements Hello {
 			e2.printStackTrace();
 		}
         
-        System.out.println(fileData);
-		
-		
+        String infos = new String(fileData);
+		infos = infos.substring(0,infos.length()-1);
+		infos += project.name + "{\n" + project.dateOfCreation +"\n";
+		for(PathOfProject path : project.getListPath()) {
+			infos += path.getIP() + ": " + path.getPath() + "\n}\n";
+		}
+		infos += ";";
         
+        FileWriter writer=null;
+		try {
+			writer = new FileWriter("dataProject.txt");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			if(writer !=null) {
+				writer.write(infos);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
     }
     
 }

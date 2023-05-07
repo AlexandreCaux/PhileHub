@@ -35,16 +35,16 @@ public class ProjectSynchro extends Thread implements Serializable {
 				String ipLocal;
 				final DatagramSocket datagramSocket = new DatagramSocket();
 			    datagramSocket.connect(InetAddress.getByName("8.8.8.8"), 12345);
-			    ip = datagramSocket.getLocalAddress().getHostAddress();
-				projectClient.addPath(path.getPath(), ip);
+			    ipLocal = datagramSocket.getLocalAddress().getHostAddress();
+				projectClient.addPath(path.getPath(), ipLocal);
 			}
 			else {
 				projectClient.addPath(path.getPath(), path.getIP());
 			}
 		}
 		
-		Registry reg = LocateRegistry.getRegistry("127.0.0.1", 18531);
-        Hello serv = (Hello) Naming.lookup(String.format("rmi://%s:%d/ImpClasse", "127.0.0.1", 18531));
+		Registry reg = LocateRegistry.getRegistry(ip, 18531);
+        Hello serv = (Hello) Naming.lookup(String.format("rmi://%s:%d/ImpClasse", ip, 18531));
 		serv.addProject(projectClient);
 		//lancer dans projectM addProject(projectClient)
 	}	

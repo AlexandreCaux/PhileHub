@@ -2,12 +2,13 @@ package main;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Project {
+public class Project implements Serializable {
 
 	String name;
 	String dateOfCreation;

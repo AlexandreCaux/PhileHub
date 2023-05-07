@@ -1,6 +1,8 @@
 package main;
 
-public class PathOfProject {
+import java.io.Serializable;
+
+public class PathOfProject implements Serializable {
 
 	String ip;
 	String path;

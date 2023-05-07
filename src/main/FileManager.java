@@ -1,10 +1,7 @@
 package main;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -15,7 +12,7 @@ import java.util.List;
 
 import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
 
-public class FileManager extends Thread{
+public class FileManager extends Thread implements Serializable {
     Project p;
     public FileManager(Project proj){
         this.p = proj;

@@ -3,6 +3,7 @@ package panel;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -17,7 +18,7 @@ import javax.swing.JTextField;
 import main.Project;
 import main.ProjectSynchro;
 
-public class PanelBtnNetWork extends JPanel {
+public class PanelBtnNetWork extends JPanel implements Serializable {
 
 	JComboBox<String> projectSelection = new JComboBox<String>();
 	JTextField ipAdress = new JTextField();

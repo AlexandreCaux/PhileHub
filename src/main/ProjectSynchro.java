@@ -1,5 +1,6 @@
 package main;
 
+import java.io.Serializable;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
@@ -15,7 +16,7 @@ import java.util.List;
 
 import panel.Panel;
 
-public class ProjectSynchro implements Runnable {
+public class ProjectSynchro extends Thread implements Serializable {
 	
 	Panel panel;
 	List<FileManager> listFileM = new LinkedList<FileManager>();

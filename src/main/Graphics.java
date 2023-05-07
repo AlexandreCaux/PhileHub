@@ -16,6 +16,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.SwingConstants;
 
+import panel.Panel;
+import panel.PanelBtnNetWork;
+import panel.PanelBtnNewProject;
+import panel.PanelBtnSettings;
+import panel.PanelNetwork;
+import panel.PanelNewProject;
+
 public class Graphics {
 	
 	static JFrame window;
@@ -44,8 +51,9 @@ public class Graphics {
 	
 		
 		PanelNewProject panelNewP = new PanelNewProject();
-		PanelBtnNew panelBtnN = new PanelBtnNew(panelNewP);
-	
+		PanelBtnNewProject panelBtnN = new PanelBtnNewProject(panelNewP);
+		PanelNetwork panelNet = new PanelNetwork(); 
+		PanelBtnNetWork panelBtnNet = new PanelBtnNetWork();
 		
 		PanelBtnSettings panelBtnS = new PanelBtnSettings();
 		Panel panel = new Panel(window, panelBtnS);

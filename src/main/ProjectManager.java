@@ -91,8 +91,8 @@ public class ProjectManager {
 			FileWriter writer = new FileWriter("dataProject.txt");
 			for(Project project : listProject) {
 				writer.write(project.name +" {\n" + project.dateOfCreation + "\n" );
-				for(String path : project.listPath) {
-					writer.write(path + "\n");
+				for(PathOfProject path : project.listPath) {
+					writer.write(path.getPath() + "\n");
 				}
 				writer.write("}\n");
 			}
@@ -115,7 +115,7 @@ public class ProjectManager {
 					project.changeDateCreation(line);
 					line = data.readLine();
 					while(!line.equals("}")) {
-						project.addPath(line);
+						project.addPath(line,"0");
 						line = data.readLine();
 					}
 					listProject.add(project);

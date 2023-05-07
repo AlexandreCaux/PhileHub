@@ -12,7 +12,7 @@ public class Project {
 	String name;
 	String dateOfCreation;
 	boolean isSelected = false;
-	List<String> listPath = new LinkedList<>();
+	List<PathOfProject> listPath = new LinkedList<>();
 	
 	public Project(String name) {
 		this.name = name;
@@ -26,16 +26,20 @@ public class Project {
 	public void changeName(String name) {
 		this.name = name;
 	}
-	public List<String> getListPath() {
+	public List<PathOfProject> getListPath() {
 		return listPath;
 	}
 	
-	public void addPath(String path) {
-		listPath.add(path);
+	public void addPath(String path, String ip) {
+		listPath.add(new PathOfProject(path,ip));
 	}
 	
 	public void removePath(String path) {
-		listPath.remove(path);
+		for(int i=0; i<listPath.size();i++) {
+			if(listPath.get(i).getPath() == path) {
+				listPath.remove(i);
+			}
+		}
 	}
 	
 	public void draw(Graphics2D g2, int x, int y) {

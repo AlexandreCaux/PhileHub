@@ -54,7 +54,7 @@ public class PanelBtnNewProject extends JPanel{
 				String name = nameProject.getText();
 				if(!name.equals("") && !pathSelected.equals("")) {
 					Project project = new Project(name);
-					project.addPath(pathSelected);
+					project.addPath(pathSelected,"0");
 					panel.projectM.addProject(project);
 					panelNewP.pathSelected = "";
 					pathSelected ="";

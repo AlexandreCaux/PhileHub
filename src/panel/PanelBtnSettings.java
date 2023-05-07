@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileSystemView;
 
+import main.PathOfProject;
 import main.ProjectManager;
 
 public class PanelBtnSettings extends JPanel {
@@ -101,7 +102,7 @@ public class PanelBtnSettings extends JPanel {
 				int returnValue=choose.showOpenDialog(addPathBtn);
 				if(returnValue==JFileChooser.APPROVE_OPTION){
 				   String path =choose.getSelectedFile().getAbsolutePath();
-				   panel.projectM.getElementListProject(panel.projectM.getIndexSelectedProject()).addPath(path);
+				   panel.projectM.getElementListProject(panel.projectM.getIndexSelectedProject()).addPath(path,"0");
 				   panel.projectM.save();
 				   removeBtn();
 				   addBtn(panel.projectM);
@@ -133,8 +134,8 @@ public class PanelBtnSettings extends JPanel {
 		this.add(removePathBtn);
 		this.add(removeBtn);
 		this.add(nameProject);
-		for(String path : projectM.getElementListProject(projectM.getIndexSelectedProject()).getListPath()) {
-			pathSelection.addItem(path);
+		for(PathOfProject path : projectM.getElementListProject(projectM.getIndexSelectedProject()).getListPath()) {
+			pathSelection.addItem(path.getPath());
 		}
 		this.add(pathSelection);
 	}
